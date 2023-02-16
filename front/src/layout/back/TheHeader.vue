@@ -1,13 +1,20 @@
 <template>
-  <header class="bg-primary py-3 text-white">
+  <header class="bg-primary py-3 text-white w-[250px]">
     <nav class="container">
       <ul class="flex gap-8 items-center flex-wrap justify-center flex-col">
-        <li>
+        <li class="border-b-2 w-full pb-4">
+          <div class="text-center text-xl font-bold">
+            <p>團購趣</p>
+            <p>後臺管理系統</p>
+          </div>
+        </li>
+        <li class="flex items-center gap-2">
           <img
             :src="user.users.image"
             :alt="user.users.name"
             class="rounded-full w-14 h-14 object-cover"
           />
+          <p>{{ user.users.name }}</p>
         </li>
         <li>
           <RouterLink to="/" class="px-3 py-2 rounded-lg hover:opacity-60"
@@ -59,10 +66,11 @@
             to="/member/qanda"
             class="px-3 py-2 rounded-lg hover:opacity-60 block"
             :class="activeClass('/member/qanda')"
-            >問與答</RouterLink
-          >
+            >留言管理
+          </RouterLink>
+
           <p
-            class="absolute -top-4 -right-2 bg-gray-600 rounded-full px-2"
+            class="absolute top-2 -right-8 bg-white rounded-full px-2 text-primary font-bold"
             v-if="messageAllProduct.length"
           >
             {{ messageAllProduct.length }}
@@ -73,7 +81,7 @@
             class="px-3 py-2 rounded-lg cursor-pointer hover:text-gray-500 hover:bg-white"
             @click="toggleChatHandler"
           >
-            悄悄話
+            私訊管理
           </p>
         </li>
         <li v-if="!user.isAdmin">
@@ -81,7 +89,7 @@
             to="/member/ship"
             class="rounded-lg hover:opacity-60 block py-3 px-2 -mt-3"
             :class="activeClass('/member/ship')"
-            >帳戶</RouterLink
+            >會員資料</RouterLink
           >
         </li>
         <li v-if="user.isAdmin">
@@ -112,14 +120,14 @@ import { storeToRefs } from 'pinia';
 
 import { useUserStore } from '@/stores/users';
 import { useMessageStore } from '@/stores/messages';
-import { useChats } from '@/stores/chats';
+import { useChatsStore } from '@/stores/chats';
 
 const route = useRoute();
 
 const user = useUserStore();
 const { logoutHandler } = user;
 const { messageAllProduct } = storeToRefs(useMessageStore());
-const { showList, showChat } = storeToRefs(useChats());
+const { showList, showChat } = storeToRefs(useChatsStore());
 
 const activeClass = (active) => {
   return route.path === active ? 'text-gray-500 bg-white' : null;

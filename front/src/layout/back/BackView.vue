@@ -1,18 +1,20 @@
 <template>
-  <div class="min-h-[calc(100vh-56px)] flex">
+  <div class="min-h-[100vh] flex items-stretch">
     <Header />
-    <div class="flex-1 overflow-auto">
+    <div class="flex-1 overflow-auto flex flex-col">
       <RouterView v-slot="{ Component }">
         <transition name="router" mode="out-in">
           <component :is="Component" />
         </transition>
       </RouterView>
+      <Footer class="mt-auto" />
     </div>
   </div>
 </template>
 
 <script setup>
 import Header from '@/layout/back/TheHeader.vue';
+import Footer from '@/layout/back/TheFooter.vue';
 </script>
 
 <style scoped>

@@ -7,10 +7,12 @@
       </transition>
     </RouterView>
   </div>
+  <Footer />
 </template>
 
 <script setup>
 import Header from '@/layout/front/TheHeader.vue';
+import Footer from '@/layout/TheFooter.vue';
 </script>
 
 <style scoped>

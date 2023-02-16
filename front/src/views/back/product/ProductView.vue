@@ -49,6 +49,7 @@
       <Textarea
         v-model="form.description"
         title="商品描述"
+        classText="h-40"
         :error="error.description.error"
         :errorText="error.description.value"
         @click="error.description.error = false"

@@ -8,12 +8,11 @@
           <th class="border-2 p-2">商品名稱</th>
           <th class="border-2 p-2">總量</th>
           <th class="border-2 p-2">總金額</th>
-          <th class="border-2 p-2">是否付款</th>
           <th class="border-2 p-2">收件地址</th>
           <th class="border-2 p-2">付款帳戶</th>
+          <th class="border-2 p-2">是否付款</th>
           <th class="border-2 p-2">出貨狀態</th>
           <th class="border-2 p-2">商品詳情</th>
-          <th class="border-2 p-2">封存</th>
         </tr>
       </thead>
       <tbody>
@@ -28,14 +27,7 @@
           <td class="border-2 p-2 text-center">
             {{ countyPrice(item.products) }}
           </td>
-          <td class="border-2 p-2 text-center">
-            <p v-if="truePaid(item.products)">
-              {{ truePaid(item.products) }} 筆已付款
-            </p>
-            <p v-if="falsePaid(item.products)" class="text-red-400">
-              {{ falsePaid(item.products) }} 筆未付款
-            </p>
-          </td>
+
           <td class="border-2 p-2">
             <p>{{ item.addressId.name }}</p>
             <p class="">
@@ -52,6 +44,14 @@
             <p>{{ item.bankId.bankNumber }}</p>
           </td>
           <td class="border-2 p-2 text-center">
+            <p v-if="truePaid(item.products)">
+              {{ truePaid(item.products) }} 筆已付款
+            </p>
+            <p v-if="falsePaid(item.products)" class="text-red-400">
+              {{ falsePaid(item.products) }} 筆未付款
+            </p>
+          </td>
+          <td class="border-2 p-2 text-center">
             <p v-if="notShip(item.products)" class="text-red-400">
               {{ notShip(item.products) }} 筆未出貨
             </p>
@@ -65,34 +65,6 @@
               src="@/assets/svg/eye-solid.svg"
               class="w-6 hover:opacity-60 mx-auto"
               @click="viewOrder(item)"
-            />
-          </td>
-          <td class="border-2 p-2">
-            <img
-              v-if="item.buyStatus === 1"
-              src="@/assets/svg/eye-solid.svg"
-              class="w-6 hover:opacity-60 mx-auto"
-              @click="
-                changeStatusOrderHandler({
-                  id: item._id,
-                  type: 'archive',
-                  status: 0,
-                  member: 'buy',
-                })
-              "
-            />
-            <img
-              v-if="item.buyStatus === 0"
-              src="@/assets/svg/eye-slash-solid.svg"
-              class="w-6 hover:opacity-60 mx-auto"
-              @click="
-                changeStatusOrderHandler({
-                  id: item._id,
-                  type: 'archive',
-                  status: 1,
-                  member: 'buy',
-                })
-              "
             />
           </td>
         </tr>
@@ -228,14 +200,13 @@ import Select from '@/components/ui/TheSelect.vue';
 
 import { useOrderStore } from '@/stores/orders';
 import { useModelStore } from '@/stores/model';
-import { useCategoryStore } from '@/stores/category';
 
 const order = useOrderStore();
 const { orderBuy, showProduct } = storeToRefs(order);
 const { paidOrderHandler, changeStatusOrderHandler, cancelOrderHandler } =
   order;
 const { toggleShow } = storeToRefs(useModelStore());
-const { sortOrder } = useCategoryStore();
+const sortOrder = ['未付款訂單', '已付款訂單', '已出貨訂單', '已取消訂單'];
 
 const sortType = ref(sortOrder[0]);
 
@@ -270,9 +241,6 @@ const filterData = computed(() => {
       item.products = item.products.filter((prod) => prod.shippingStatus === 2);
       return item.buyStatus === 0 && item.products.length > 0;
     });
-  }
-  if (sortOrder.type === sortType[4]) {
-    return copydata.filter((item) => item.buyStatus === 1);
   }
 });
 

@@ -10,6 +10,7 @@ import { useCartStore } from '@/stores/carts';
 import { useSwalStore } from '@/stores/swal';
 import { useProductsStore } from '@/stores/products';
 import { useMessageStore } from '@/stores/messages';
+import { useChatsStore } from '@/stores/chats';
 
 export const useUserStore = defineStore(
   'user',
@@ -21,6 +22,7 @@ export const useUserStore = defineStore(
     const { cart } = storeToRefs(useCartStore());
     const products = useProductsStore();
     const { getAllMemberProductMessageHanlder } = useMessageStore();
+    const chats = useChatsStore();
 
     const isLogin = ref(true);
 
@@ -140,6 +142,8 @@ export const useUserStore = defineStore(
         cart.value.length = '';
         router.push('/');
         swalSuccess('登出成功');
+        chats.showChat = false;
+        chats.showList = false;
       } catch (error) {
         swalError(error);
       }

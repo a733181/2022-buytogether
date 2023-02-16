@@ -1,12 +1,22 @@
 <template>
-  <Select v-model="selectActive" :select="select" class="mb-6" />
   <p v-if="!categoryQuantity.length" class="text-center text-2xl">沒有資料</p>
   <div v-else>
-    <div class="flex gap-2 items-center">
-      <p>年份：</p>
-      <Select v-model="yearsActive" :select="years" />
+    <div class="flex gap-8 items-center">
+      <Select v-model="selectActive" :select="select" />
+      <div class="flex items-center justify-center gap-4">
+        <p>年份</p>
+        <Select v-model="yearsActive" :select="years" />
+      </div>
     </div>
-    <Bar id="chart" :options="chartOptions" :data="chartData" />
+    <div class="w-[500px] h-[500px] mx-auto">
+      <Bar
+        id="chart"
+        :options="chartOptions"
+        :data="chartData"
+        :width="500"
+        :height="500"
+      />
+    </div>
   </div>
 </template>
 
@@ -42,7 +52,7 @@ ChartJS.register(
   LinearScale
 );
 
-const select = ['購買圖表', '銷售圖表'];
+const select = ['購買分析', '銷售分析'];
 const selectActive = ref(select[1]);
 const years = ref(['全部']);
 const yearsActive = ref('全部');
@@ -93,7 +103,7 @@ const getNewData = (data) => {
 };
 
 const categoryQuantity = computed(() => {
-  if (selectActive.value === '購買圖表') {
+  if (selectActive.value === select[0]) {
     return getNewData(getOrderAll(orderBuy.value));
   } else {
     return getNewData(getOrderAll(orderSell.value));

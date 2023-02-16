@@ -10,7 +10,6 @@ import messageRouter from './routes/messages.js';
 import contactRouter from './routes/contacts.js';
 import reportRouter from './routes/reports.js';
 import chatRouter from './routes/chats.js';
-import { getAllUser } from './controllers/chats.js';
 
 import './passport/passport.js';
 
@@ -19,23 +18,19 @@ mongoose.set('sanitizeFilter', true);
 
 const app = express();
 
+const corsSet = {
+  origin(origin, callback) {
+    if (origin.includes('github') || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      callback(null, true);
+    } else {
+      callback(new Error(), false);
+    }
+  },
+  credentials: true,
+};
+
 // 跨域請求設定
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (
-        origin === undefined ||
-        origin.includes('github') ||
-        origin.includes('localhost') ||
-        origin.includes('127.0.0.1')
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error(), false);
-      }
-    },
-  }),
-);
+app.use(cors(corsSet));
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
@@ -65,22 +60,7 @@ const server = app.listen(process.env.PORT || 4000, () => {
   console.log('Server started');
 });
 
-const io = new Server(server, {
-  cors: {
-    origin(origin, callback) {
-      if (
-        origin === undefined ||
-        origin.includes('github') ||
-        origin.includes('localhost') ||
-        origin.includes('127.0.0.1')
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error(), false);
-      }
-    },
-  },
-});
+const io = new Server(server);
 
 global.onlineUsers = new Map();
 
@@ -99,7 +79,6 @@ io.on('connection', (socket) => {
   });
   socket.on('show-user', (data) => {
     const sendUserSocket = onlineUsers.get(data.toUserId);
-    console.log(sendUserSocket);
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit('show-user', data);
     }

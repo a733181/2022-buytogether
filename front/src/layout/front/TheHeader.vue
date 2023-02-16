@@ -24,7 +24,7 @@
               to="/about"
               class="px-3 py-2 rounded-lg hover:opacity-60"
               :class="activeClass('/about')"
-              >關於團購趣</RouterLink
+              >關於本站</RouterLink
             >
           </li>
           <li v-if="user.isMember">
@@ -32,16 +32,8 @@
               to="/tracklist"
               class="px-3 py-2 rounded-lg hover:opacity-60"
               :class="activeClass('/tracklist')"
-              >收藏/追蹤</RouterLink
+              >收藏商品</RouterLink
             >
-          </li>
-          <li v-if="user.isMember">
-            <p
-              class="px-3 py-2 rounded-lg cursor-pointer hover:text-gray-500 hover:bg-white"
-              @click="toggleChatHandler"
-            >
-              悄悄話
-            </p>
           </li>
           <li v-if="user.isMember">
             <p
@@ -85,7 +77,7 @@ import { useCartStore } from '@/stores/carts';
 import { useBankStore } from '@/stores/bank';
 import { useAddressStore } from '@/stores/address';
 import { useSwalStore } from '@/stores/swal';
-import { useChats } from '@/stores/chats';
+import { useChatsStore } from '@/stores/chats';
 
 const route = useRoute();
 const router = useRouter();
@@ -96,7 +88,7 @@ const { cart } = storeToRefs(carts);
 const { listAddress } = storeToRefs(useAddressStore());
 const { listBank } = storeToRefs(useBankStore());
 const { swalError } = useSwalStore();
-const { showList, showChat } = storeToRefs(useChats());
+const { showList, showChat } = storeToRefs(useChatsStore());
 
 const activeClass = (active) => {
   return route.path === active ? 'text-primary bg-white' : null;

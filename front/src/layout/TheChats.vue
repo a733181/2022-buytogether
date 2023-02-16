@@ -79,9 +79,9 @@ import { ref, onUpdated } from 'vue';
 import Input from '@/components/ui/TheInput.vue';
 import Btn from '@/components/ui/TheBtn.vue';
 
-import { useChats } from '@/stores/chats';
+import { useChatsStore } from '@/stores/chats';
 
-const chat = useChats();
+const chat = useChatsStore();
 const { sendChatHandler, addChatUserHandler } = chat;
 const { showChat, showList, message, messages, toUser, chatUserList } =
   storeToRefs(chat);

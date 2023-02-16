@@ -16,9 +16,10 @@
         class="w-16 h-16 rounded-full object-cover"
       />
       <p class="text-xl">{{ memberHomeProduct?.member?.name || '' }}</p>
-      <Btn
-        v-if="users._id !== memberHomeProduct.member._id"
-        text="悄悄話"
+      <img
+        src="@/assets/svg/chat.svg"
+        alt="chat"
+        class="w-6 hover:opacity-60"
         @click="
           addChatUserHandler({
             toUserId: memberHomeProduct.member._id,
@@ -105,7 +106,7 @@ import Pagination from '@/components/ui/ThePagination.vue';
 import { useCategoryStore } from '@/stores/category';
 import { useProductsStore } from '@/stores/products';
 import { useUserStore } from '@/stores/users';
-import { useChats } from '@/stores/chats';
+import { useChatsStore } from '@/stores/chats';
 
 const route = useRoute();
 const product = useProductsStore();
@@ -115,7 +116,7 @@ const { getMemberSellProductHandler } = product;
 const { memberHomeProduct, productPage } = storeToRefs(product);
 const { clickListHandler } = user;
 const { users, isMember } = storeToRefs(user);
-const { addChatUserHandler } = useChats();
+const { addChatUserHandler } = useChatsStore();
 
 getMemberSellProductHandler({ userId: route.params.id });
 

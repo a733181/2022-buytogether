@@ -14,40 +14,57 @@
     <div class="flex flex-col lg:flex-row gap-8 items-stretch mb-20">
       <div class="lg:w-2/5 flex flex-col">
         <h1 class="font-bold text-2xl mb-3">{{ sellProduct.name }}</h1>
-        <div class="mb-4 flex justify-between items-center">
-          <p class="text-primary text-xl">${{ sellProduct.price }}</p>
-          <p
-            class="-mb-2 hover:opacity-60 text-gray-400"
-            @click="clickBtnShowReportHandler"
-          >
-            檢舉
-          </p>
-        </div>
-        <p class="mb-6">
-          銷量：{{ sellProduct.maxNumber - sellProduct.remaining }}
+        <p class="text-primary text-xl mb-5">${{ sellProduct.price }}</p>
+        <p class="mb-1">
+          銷售數量：{{ sellProduct.maxNumber - sellProduct.remaining }}
         </p>
+        <p class="mb-6">剩餘數量：{{ sellProduct.remaining }}</p>
         <p class="mb-6 whitespace-pre-line">
           {{ sellProduct.description }}
         </p>
-        <div v-if="sellProduct.userId" class="flex items-center gap-4 my-5">
-          <p>團購主：</p>
+        <div v-if="sellProduct.userId" class="flex items-center gap-8 my-5">
           <img
             :src="sellProduct.userId.image"
             :alt="sellProduct.userId.name"
             class="w-16 h-16 rounded-full object-cover"
           />
-          <p>{{ sellProduct.userId.name }}</p>
-          <RouterLink
-            :to="`/memberhome/${sellProduct.userId._id}`"
-            class="text-primary"
-            >更多商品</RouterLink
-          >
+          <div>
+            <p class="mb-2 text-lg">{{ sellProduct.userId.name }}</p>
+            <div class="flex gap-3">
+              <img
+                src="@/assets/svg/chat.svg"
+                alt="chat"
+                class="w-4 hover:opacity-60"
+                @click="
+                  addChatUserHandler({
+                    toUserId: sellProduct.userId._id,
+                    name: sellProduct.userId.name,
+                    image: sellProduct.userId.image,
+                  })
+                "
+              />
+              <img
+                src="@/assets/svg/exclamation-solid.svg"
+                alt="檢舉"
+                class="w-4 h-4 hover:opacity-60"
+                @click="clickBtnShowReportHandler"
+              />
+              <RouterLink :to="`/memberhome/${sellProduct.userId._id}`"
+                ><img
+                  src="@/assets/svg/store-solid.svg"
+                  alt="more"
+                  class="w-4 h-4"
+              /></RouterLink>
+            </div>
+          </div>
         </div>
-        <div class="mt-auto w-full">
-          <div class="flex items-center justify-between mb-6">
+        <div class="flex mt-auto item-center justify-center gap-5">
+          <div
+            class="flex items-center border-2 border-primary rounded-lg w-1/3 justify-center"
+          >
             <img
               src="@/assets/svg/minus.svg"
-              class="w-5 hover:opacity-60"
+              class="w-5 hover:opacity-60 block mr-auto ml-2"
               @click="changeQuantity(-1)"
               alt="減少數量"
               title="減少數量"
@@ -55,7 +72,7 @@
             <p>{{ quantity }}</p>
             <img
               src="@/assets/svg/plus.svg"
-              class="w-5 hover:opacity-60"
+              class="w-5 hover:opacity-60 block ml-auto mr-2"
               @click="changeQuantity(1)"
               alt="增加數量"
               title="增加數量"
@@ -63,7 +80,7 @@
           </div>
           <Btn
             text="加入購物車"
-            class="w-full"
+            class="w-1/3"
             :disabled="isLoadingAddCart"
             :loading="isLoadingAddCart"
             @click="clickAddCartBtnHanlder({ id: sellProduct._id, quantity })"
@@ -73,7 +90,7 @@
       <div class="flex-1 -order-1 lg:order-1">
         <div class="relative h-[490px] mb-5">
           <div v-if="activeIndex === imagesLength + 1">
-            <Youtube :data="sellProduct.youtubeId" />
+            <Youtube :data="sellProduct.youtubeId" class="w-[90%] mx-auto" />
           </div>
           <img
             v-else
@@ -188,6 +205,7 @@ import { useMessageStore } from '@/stores/messages';
 import { useModelStore } from '@/stores/model';
 import { useUserStore } from '@/stores/users';
 import { useReportsStore } from '@/stores/reports';
+import { useChatsStore } from '@/stores/chats';
 
 const route = useRoute();
 
@@ -201,6 +219,8 @@ const { messageProduct, messagePage } = storeToRefs(message);
 const { toggleShow } = storeToRefs(useModelStore());
 const { isLoginHandler } = useUserStore();
 const { createReporteHandler } = useReportsStore();
+const { addChatUserHandler } = useChatsStore();
+
 getSellProdctHander(route.params.id);
 getProductMessageHandler(route.params.id);
 

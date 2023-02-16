@@ -6,11 +6,17 @@ import { apiAuth } from '@/axios/index';
 import { useSwalStore } from '@/stores/swal';
 import { useUserStore } from '@/stores/users';
 
-export const useChats = defineStore('chats', () => {
+export const useChatsStore = defineStore('chats', () => {
   const user = useUserStore();
   const { swalSuccess, swalError } = useSwalStore();
   const socket = reactive({});
-  socket.current = io(import.meta.env.VITE_API);
+  socket.current = io(import.meta.env.VITE_API, {
+    transports: ['websocket'],
+    extraHeaders: {
+      socket: 'socketclient',
+    },
+  });
+
   const showList = ref(false);
   const showChat = ref(false);
   const fromUserId = ref();
@@ -123,7 +129,6 @@ export const useChats = defineStore('chats', () => {
       });
 
       chatUserList.value = data.result;
-      console.log(chatUserList.value);
       chatUserList.value.forEach((item) => {
         item.image =
           item.image ||

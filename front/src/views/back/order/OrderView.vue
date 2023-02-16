@@ -6,30 +6,20 @@
     </Breadcrumbs>
     <div class="flex gap-8 mb-10 border-b-2 border-primary">
       <p
+        v-for="(tab, index) in tabCategory"
+        :key="index"
         class="text-lg py-3 px-8"
-        :class="{ 'bg-primary text-white rounded-t-lg': activeTab === '購買' }"
-        @click="activeTab = '購買'"
+        :class="{
+          'bg-primary text-white rounded-t-lg': activeTab === tab,
+        }"
+        @click="activeTab = tab"
       >
-        購買
-      </p>
-      <p
-        class="text-lg py-3 px-8"
-        :class="{ 'bg-primary text-white rounded-t-lg': activeTab === '銷售' }"
-        @click="activeTab = '銷售'"
-      >
-        銷售
-      </p>
-      <p
-        class="text-lg py-3 px-8"
-        :class="{ 'bg-primary text-white rounded-t-lg': activeTab === '圖表' }"
-        @click="activeTab = '圖表'"
-      >
-        圖表
+        {{ tab }}
       </p>
     </div>
-    <BuyOrder v-if="activeTab === '購買'" />
-    <SellOrder v-if="activeTab === '銷售'" />
-    <ChartOrder v-if="activeTab === '圖表'" />
+    <BuyOrder v-if="activeTab === tabCategory[0]" />
+    <SellOrder v-if="activeTab === tabCategory[1]" />
+    <ChartOrder v-if="activeTab === tabCategory[2]" />
   </div>
 </template>
 
@@ -48,5 +38,7 @@ const { getMemberBuyOrderHandler, getMemberSellOrderHandler } = order;
 getMemberBuyOrderHandler();
 getMemberSellOrderHandler();
 
-const activeTab = ref('購買');
+const activeTab = ref('購買訂單');
+
+const tabCategory = ['購買訂單', '銷售訂單', '訂單分析'];
 </script>

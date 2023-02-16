@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col border-2 border-orange-200 p-4 rounded-lg">
     <div class="relative">
       <RouterLink :to="`/product/${data._id}`">
         <img
@@ -7,6 +7,7 @@
           :src="data.image"
         />
       </RouterLink>
+      <div></div>
       <div
         class="absolute top-2 right-2 flex flex-col justify-center items-center"
       >
@@ -27,28 +28,24 @@
     </div>
     <RouterLink :to="`/product/${data._id}`" class="hover:text-primary">
       <div class="mt-3 mb-4">
-        <div class="flex justify-between">
-          <h3 class="text-xl mb-1 ml-2">{{ data.name }}</h3>
-          <p class="text-xl text-primary whitespace-nowrap">
-            $ {{ data.price }}
-          </p>
-        </div>
-        <div class="flex justify-between">
-          <p class="word-break w-[76%]">
-            {{ data.description }}
-          </p>
-          <p class="w-[30%] text-end">
-            銷售數量：{{ data.maxNumber - data.remaining }}
-          </p>
-        </div>
+        <h3 class="text-xl mb-1 ml-2">{{ data.name }}</h3>
+
+        <p class="text-3xl text-primary text-end font-bold">
+          $ {{ data.price }}
+        </p>
       </div>
     </RouterLink>
     <div class="flex items-center mt-auto">
-      <RouterLink v-if="data.userId" :to="`/memberhome/${data.userId._id}`">
-        <p class="hover:text-primary text-gray-500">
-          團主：{{ data.userId.name }}
+      <div class="">
+        <p class="text-gray-500">
+          銷售數量：{{ data.maxNumber - data.remaining }}
         </p>
-      </RouterLink>
+        <RouterLink v-if="data.userId" :to="`/memberhome/${data.userId._id}`">
+          <p class="hover:text-primary text-gray-500">
+            開團主揪：{{ data.userId.name }}
+          </p>
+        </RouterLink>
+      </div>
       <Btn
         text="加入購物車"
         class="ml-auto"
