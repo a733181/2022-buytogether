@@ -62,8 +62,18 @@ const server = app.listen(process.env.PORT || 4000, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173/', 'https://a733181.github.io/2022-buytogether/'],
-    credentials: true,
+    origin: '*',
+  },
+  allowRequest: (req, cb) => {
+    const isAllowed =
+      req.headers.header === 'socket' &&
+      (req.headers.origin.includes('github') ||
+        req.headers.origin.includes('localhost') ||
+        req.headers.origin.includes('127.0.0.1'));
+
+    console.log(req.headers.origin);
+    console.log(isAllowed);
+    cb(null, isAllowed);
   },
 });
 
