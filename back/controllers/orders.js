@@ -168,12 +168,8 @@ export const getMySellOrders = async (req, res) => {
       .populate({
         path: 'products.productId',
         select: '_id addressId bankId name image category userId price',
-        populate: {
-          path: 'userId',
-          model: 'users',
-          select: '_id',
-        },
       })
+      .populate('userId', '_id name')
       .populate('addressId', '-status -userId')
       .populate('bankId', '-status -userId');
 

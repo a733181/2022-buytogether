@@ -10,26 +10,25 @@
         <p>&ensp;/&ensp;Email編輯</p>
       </div>
     </Breadcrumbs>
-    <div class="lg:w-1/2 mx-auto border-2 px-5 py-4">
-      <h2 class="mb-8 text-2xl">修改資訊</h2>
+    <div class="lg:w-1/2 mx-auto border-2 px-5 py-10 rounded-lg">
       <form @submit.prevent="submitHandler">
         <Input
           title="Email"
           type="email"
-          class="mb-8"
+          class="mb-8 w-4/5 mx-auto"
           v-model="form.email"
           :error="error.error"
           :errorText="error.value"
           @click="error.error = false"
         />
-        <div class="flex justify-between mt-8">
-          <RouterLink to="/member/ship" class="w-1/3 block">
+        <div class="flex mt-8 justify-center gap-5">
+          <RouterLink to="/member/ship" class="w-1/4 block">
             <Btn text="取消" className="btn-outline" class="w-full" />
           </RouterLink>
           <Btn
             type="sumbit"
             text="確定"
-            class="w-1/3"
+            class="w-1/4"
             :disabled="isLoading"
             :loading="isLoading"
           />

@@ -14,15 +14,7 @@
         </p>
       </div>
     </Breadcrumbs>
-    <form class="lg:w-1/2 mx-auto" @submit.prevent="submitHandler">
-      <UploadImage
-        v-model="form.image"
-        title="商品主圖"
-        :error="error.image.error"
-        :errorText="error.image.value"
-        @click="error.image.error = false"
-        id="main-image"
-      />
+    <form class="lg:w-1/2 mx-auto space-y-5" @submit.prevent="submitHandler">
       <Input
         v-model="form.name"
         title="商品名稱"
@@ -30,22 +22,26 @@
         :errorText="error.name.value"
         @click="error.name.error = false"
       />
-      <Input
-        v-model="form.price"
-        title="價格"
-        :error="error.price.error"
-        :errorText="error.price.value"
-        @click="error.price.error = false"
-      />
-      <Input
-        v-model="form.maxNumber"
-        title="全部數量"
-        :error="error.maxNumber.error"
-        :errorText="error.maxNumber.value"
-        @click="error.maxNumber.error = false"
-        :disabled="!!editProduct.maxNumber"
-      />
-      <p class="text-red-400">＊全部數量無法修改，請謹慎填寫</p>
+      <div class="grid grid-cols-2 gap-5">
+        <Input
+          v-model="form.price"
+          title="價格"
+          :error="error.price.error"
+          :errorText="error.price.value"
+          @click="error.price.error = false"
+        />
+        <div>
+          <Input
+            v-model="form.maxNumber"
+            title="全部數量"
+            :error="error.maxNumber.error"
+            :errorText="error.maxNumber.value"
+            @click="error.maxNumber.error = false"
+            :disabled="!!editProduct.maxNumber"
+          />
+          <p class="text-red-400">＊全部數量無法修改，請謹慎填寫</p>
+        </div>
+      </div>
       <Textarea
         v-model="form.description"
         title="商品描述"
@@ -55,30 +51,45 @@
         @click="error.description.error = false"
       />
       <Input
-        v-model="form.bank"
-        title="收款帳戶"
-        :select="bankNewList"
-        :error="error.bank.error"
-        :errorText="error.bank.value"
-        @click="error.bank.error = false"
-      />
-      <Input
-        v-model="form.category"
-        title="商品分類"
-        :select="productCategory"
-        :error="error.category.error"
-        :errorText="error.category.value"
-        @click="error.category.error = false"
-      />
-      <p>＊點選商品分類，選擇商品分類</p>
-      <Input
         v-model="form.youtubeVideoLink"
         title="Youtube影片連結"
         :error="error.youtubeVideoLink.error"
         :errorText="error.youtubeVideoLink.value"
         @click="error.youtubeVideoLink.error = false"
       />
-      <p class="mt-8">＊最多可上傳 9張圖片</p>
+      <div class="flex gap-5 mb-8">
+        <div class="flex-1">
+          <Input
+            v-model="form.bank"
+            title="收款帳戶"
+            :select="bankNewList"
+            :error="error.bank.error"
+            :errorText="error.bank.value"
+            @click="error.bank.error = false"
+          />
+          <p class="text-red-400">＊點選收款帳戶，選擇收款帳戶</p>
+        </div>
+        <div>
+          <Input
+            v-model="form.category"
+            title="商品分類"
+            :select="productCategory"
+            :error="error.category.error"
+            :errorText="error.category.value"
+            @click="error.category.error = false"
+          />
+          <p class="text-red-400">＊點選商品分類，選擇商品分類</p>
+        </div>
+      </div>
+      <UploadImage
+        v-model="form.image"
+        title="商品主圖"
+        :error="error.image.error"
+        :errorText="error.image.value"
+        @click="error.image.error = false"
+        id="main-image"
+      />
+      <p class="mt-8 text-red-400">＊商品內文圖片最多可上傳 9張圖片</p>
       <div class="mt-2 flex">
         <Btn
           v-if="!form.images.length || form.images.length < 9"

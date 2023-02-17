@@ -34,81 +34,95 @@
         </p>
       </div>
     </Breadcrumbs>
-    <form @submit.prevent="submitHandler">
-      <Input title="郵遞區號" :disabled="true" :value="code" />
-      <Input
-        title="城市"
-        v-model="form.city"
-        :error="error.city.error"
-        :errorText="error.city.value"
-        @click="error.city.error = false"
-        :select="city"
-      />
-      <p>請點選城市，選擇城市</p>
-      <Input
-        title="區鄉鎮"
-        v-model="form.districts"
-        :error="error.districts.error"
-        :errorText="error.districts.value"
-        @click="error.districts.error = false"
-        :select="districts"
-      />
-      <p>請點選區鄉鎮，選擇區鄉鎮</p>
-      <Input
-        title="街道"
-        v-model="form.street"
-        :error="error.street.error"
-        :errorText="error.street.value"
-        @click="error.street.error = false"
-      />
-      <Input
-        v-if="editAddress.type === 'user'"
-        title="同帳號姓名"
-        type="checkbox"
-        v-model="accountName"
-      />
-      <Input
-        title="姓名"
-        v-model="form.name"
-        :error="error.name.error"
-        :errorText="error.name.value"
-        @click="error.name.error = false"
-      />
-      <Input
-        v-if="editAddress.type === 'user'"
-        title="同帳號電話"
-        type="checkbox"
-        v-model="accountPhone"
-      />
-      <Input
-        title="電話"
-        v-model="form.phone"
-        :error="error.phone.error"
-        :errorText="error.phone.value"
-        @click="error.phone.error = false"
-      />
-      <Input
-        title="預設"
-        type="checkbox"
-        v-model="form.preset"
-        id="addressPreset"
-      />
-      <div class="flex justify-between mt-8">
-        <Btn
-          text="取消"
-          className="btn-outline"
-          class="w-1/3"
-          @click="cancelAddressHandler"
+    <div class="w-1/2 mx-auto">
+      <form @submit.prevent="submitHandler">
+        <div class="grid gap-5 grid-cols-3">
+          <Input title="郵遞區號" :disabled="true" v-model="form.code" />
+          <div>
+            <Input
+              title="城市"
+              v-model="form.city"
+              :error="error.city.error"
+              :errorText="error.city.value"
+              @click="error.city.error = false"
+              :select="city"
+            />
+            <p>請點選城市，選擇城市</p>
+          </div>
+          <div>
+            <Input
+              title="區鄉鎮"
+              v-model="form.districts"
+              :error="error.districts.error"
+              :errorText="error.districts.value"
+              @click="error.districts.error = false"
+              :select="districts"
+            />
+            <p>請點選區鄉鎮，選擇區鄉鎮</p>
+          </div>
+        </div>
+        <Input
+          title="街道"
+          v-model="form.street"
+          :error="error.street.error"
+          :errorText="error.street.value"
+          @click="error.street.error = false"
         />
-        <Btn
-          type="sumbit"
-          text="確定"
-          class="w-1/3"
-          :disabled="isLoading"
-          :loading="isLoading"
+        <div class="grid grid-cols-2 gap-5">
+          <div>
+            <Input
+              title="姓名"
+              v-model="form.name"
+              :error="error.name.error"
+              :errorText="error.name.value"
+              @click="error.name.error = false"
+            />
+            <Input
+              v-if="editAddress.type === 'user'"
+              title="同帳號姓名"
+              type="checkbox"
+              v-model="accountName"
+            />
+          </div>
+          <div>
+            <Input
+              title="電話"
+              v-model="form.phone"
+              :error="error.phone.error"
+              :errorText="error.phone.value"
+              @click="error.phone.error = false"
+            />
+            <Input
+              v-if="editAddress.type === 'user'"
+              title="同帳號電話"
+              type="checkbox"
+              v-model="accountPhone"
+            />
+          </div>
+        </div>
+        <Input
+          title="預設"
+          type="checkbox"
+          v-model="form.preset"
+          id="addressPreset"
         />
-      </div>
-    </form>
+        <div class="flex items-center justify-center gap-5 mt-8">
+          <Btn
+            text="取消"
+            className="btn-outline"
+            class="w-1/4"
+            @click="cancelAddressHandler"
+          />
+          <Btn
+            type="sumbit"
+            text="確定"
+            class="w-1/4"
+            :disabled="isLoading"
+            :loading="isLoading"
+          />
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -141,6 +155,7 @@ const isLoading = ref(false);
 const form = reactive({
   _id: editAddress.value._id || '',
   userId: editAddress.value.userId || null,
+  code: editAddress.value.code || '',
   city: editAddress.value.city || '',
   districts: editAddress.value.districts || '',
   street: editAddress.value.street || '',
@@ -172,16 +187,6 @@ const error = reactive({
   },
 });
 
-const code = computed(() => {
-  if (form.districts && form.districts.length > 2) {
-    const codeNumber = districtsList
-      .filter((item) => item.name === form.city)[0]
-      .districts.filter((item) => item.name === form.districts)[0].zip;
-    return codeNumber;
-  }
-  return '';
-});
-
 const city = computed(() => {
   return districtsList.map((item) => item.name);
 });
@@ -192,6 +197,7 @@ const districts = computed(() => {
       .filter((item) => item.name === form.city)[0]
       .districts.map((item) => item.name);
   }
+
   return [];
 });
 
@@ -209,6 +215,30 @@ watch(accountName, (value) => {
     form.name = '';
   }
 });
+
+watch(
+  () => form.districts,
+  () => {
+    if (form.districts === '') {
+      form.code = '';
+    } else if (form.districts.length > 2) {
+      const codeNumber = districtsList
+        .filter((item) => item.name === form.city)[0]
+        .districts.filter((item) => item.name === form.districts)[0].zip;
+      form.code = codeNumber;
+    }
+  }
+);
+
+watch(
+  () => form.city,
+  () => {
+    if (form.city === '') {
+      form.code = '';
+      form.districts = '';
+    }
+  }
+);
 
 const validatorFormHandler = () => {
   if (validator.isEmpty(form.city)) {
@@ -261,7 +291,7 @@ const submitHandler = async () => {
   if (validatorFormHandler()) return;
 
   isLoading.value = true;
-  form.code = Number(code.value);
+  form.code = Number(form.code);
   await sumbitAddressHandler(form);
   isLoading.value = false;
 };

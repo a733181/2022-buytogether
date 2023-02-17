@@ -206,8 +206,10 @@ export const useUserStore = defineStore(
     const changeListHalder = (index, data, id) => {
       if (index === -1) {
         data.push(id);
+        swalSuccess('加入成功');
       } else {
         data.splice(index, 1);
+        swalSuccess('刪除成功');
       }
     };
 
@@ -227,10 +229,13 @@ export const useUserStore = defineStore(
     };
 
     const clickListHandler = async ({ id, type = 'track' }) => {
+      console.log(id);
       if (!isLoginHandler()) return;
       try {
         const indexTrack = users.track.findIndex((item) => item === id);
         const indexBlack = users.black.findIndex((item) => item === id);
+
+        console.log(indexTrack, indexBlack);
 
         await apiAuth.patch('/users/list', { id, type });
         if (type === 'track') {

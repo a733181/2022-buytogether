@@ -16,7 +16,7 @@
         <li
           v-for="user in chatUserList"
           :key="user._id"
-          class="p-2 flex gap-1 bg-slate-200"
+          class="mx-2 p-2 flex gap-1 rounded-lg border-[1px] border-gray-300 cursor-pointer"
           @click="
             addChatUserHandler({
               toUserId: user.userId,

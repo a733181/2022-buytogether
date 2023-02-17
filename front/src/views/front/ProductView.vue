@@ -30,11 +30,11 @@
           />
           <div>
             <p class="mb-2 text-lg">{{ sellProduct.userId.name }}</p>
-            <div class="flex gap-3">
+            <div class="flex gap-3 relative px-2">
               <img
                 src="@/assets/svg/chat.svg"
                 alt="chat"
-                class="w-4 hover:opacity-60"
+                class="toggle w-4 hover:opacity-60 cursor-pointer"
                 @click="
                   addChatUserHandler({
                     toUserId: sellProduct.userId._id,
@@ -43,18 +43,35 @@
                   })
                 "
               />
+              <p
+                class="toggle-text text-gray-500 text-sm absolute top-5 -left-[2px]"
+              >
+                私訊
+              </p>
               <img
                 src="@/assets/svg/exclamation-solid.svg"
                 alt="檢舉"
-                class="w-4 h-4 hover:opacity-60"
+                class="toggle w-4 h-4 hover:opacity-60 cursor-pointer"
                 @click="clickBtnShowReportHandler"
               />
-              <RouterLink :to="`/memberhome/${sellProduct.userId._id}`"
+              <p
+                class="toggle-text text-gray-500 text-sm absolute top-5 left-7"
+              >
+                檢舉
+              </p>
+              <RouterLink
+                :to="`/memberhome/${sellProduct.userId._id}`"
+                class="toggle hover:opacity-60"
                 ><img
                   src="@/assets/svg/store-solid.svg"
                   alt="more"
                   class="w-4 h-4"
               /></RouterLink>
+              <p
+                class="toggle-text text-gray-500 text-sm absolute top-5 left-14"
+              >
+                商品
+              </p>
             </div>
           </div>
         </div>
@@ -175,10 +192,10 @@
         </div>
       </div>
     </div>
-    <Model>
+    <Model classModel="w-2/3 lg:w-1/2">
       <SendMessage
         @message="submitReportHandler"
-        class="lg:w-1/2 mx-auto"
+        class="lg:w-2/3 mx-auto"
         classText="h-40"
       />
     </Model>
@@ -332,3 +349,13 @@ onUnmounted(() => {
   messagePage.value.current = 1;
 });
 </script>
+
+<style scoped>
+.toggle-text {
+  display: none;
+}
+
+.toggle:hover + .toggle-text {
+  display: block;
+}
+</style>

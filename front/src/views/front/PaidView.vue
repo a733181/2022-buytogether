@@ -45,7 +45,7 @@
           </td>
           <td class="border-2 p-2">
             <Btn
-              text="付款"
+              :text="item.productId?.paid ? '已付款' : '未付款'"
               class="w-full mt-6"
               :disabled="item.productId?.paid"
               :loading="isLoading"

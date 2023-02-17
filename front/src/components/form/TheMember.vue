@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitHandler" class="lg:w-1/2 mx-auto">
+  <form @submit.prevent="submitHandler" class="lg:w-1/3 mx-auto">
     <Input
       title="手機號碼"
       v-model="form.phone"

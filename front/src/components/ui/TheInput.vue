@@ -76,9 +76,6 @@ const props = defineProps({
   disabled: {
     type: Boolean,
   },
-  value: {
-    type: String,
-  },
   maxlength: {
     type: String,
   },
@@ -150,9 +147,6 @@ watch(proxy, (value) => {
 watch(props, (value) => {
   if (value.modelValue !== false && value.modelValue !== proxy.value) {
     proxy.value = value.modelValue;
-  }
-  if (value.value && value.value !== proxy.value) {
-    proxy.value = value.value;
   }
 });
 </script>

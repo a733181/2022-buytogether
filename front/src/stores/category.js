@@ -1831,13 +1831,7 @@ export const useCategoryStore = defineStore('category', () => {
     '銷售數量由低至高',
   ];
 
-  const sortOrder = [
-    '未付款訂單',
-    '已付款訂單',
-    '已出貨訂單',
-    '已取消訂單',
-    '封存訂單',
-  ];
+  const sortOrder = ['未付款', '已付款未出貨', '已出貨', '已取消'];
 
   const sortMemberProduct = [
     '全部商品',

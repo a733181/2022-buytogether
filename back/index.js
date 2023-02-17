@@ -60,7 +60,12 @@ const server = app.listen(process.env.PORT || 4000, () => {
   console.log('Server started');
 });
 
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: ['http://localhost:5173/', 'https://a733181.github.io/2022-buytogether/'],
+    credentials: true,
+  },
+});
 
 global.onlineUsers = new Map();
 

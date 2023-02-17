@@ -6,13 +6,13 @@
         <tr>
           <th class="border-2 p-2">訂單編號</th>
           <th class="border-2 p-2">商品名稱</th>
-          <th class="border-2 p-2">總量</th>
-          <th class="border-2 p-2">總金額</th>
+          <th class="border-2 p-2 w-[60px]">總量</th>
+          <th class="border-2 p-2 w-[80px]">總金額</th>
           <th class="border-2 p-2">收件地址</th>
           <th class="border-2 p-2">付款帳戶</th>
           <th class="border-2 p-2">是否付款</th>
           <th class="border-2 p-2">出貨狀態</th>
-          <th class="border-2 p-2">商品詳情</th>
+          <th class="border-2 p-2 w-[90px]">商品詳情</th>
         </tr>
       </thead>
       <tbody>
@@ -30,20 +30,20 @@
 
           <td class="border-2 p-2">
             <p>{{ item.addressId.name }}</p>
+            <p>
+              {{ item.addressId.phone }}
+            </p>
             <p class="">
               {{ item.addressId.code }}
               {{ item.addressId.city }} {{ item.addressId.districts }}
               {{ item.addressId.street }}
-            </p>
-            <p>
-              {{ item.addressId.phone }}
             </p>
           </td>
           <td class="border-2 p-2">
             <p>{{ item.bankId.bankName }}</p>
             <p>{{ item.bankId.bankNumber }}</p>
           </td>
-          <td class="border-2 p-2 text-center">
+          <td class="border-2 p-2 text-center lg:w-[120px]">
             <p v-if="truePaid(item.products)">
               {{ truePaid(item.products) }} 筆已付款
             </p>
@@ -51,7 +51,7 @@
               {{ falsePaid(item.products) }} 筆未付款
             </p>
           </td>
-          <td class="border-2 p-2 text-center">
+          <td class="border-2 p-2 text-center lg:w-[120px]">
             <p v-if="notShip(item.products)" class="text-red-400">
               {{ notShip(item.products) }} 筆未出貨
             </p>
@@ -72,119 +72,125 @@
     </table>
     <Model>
       <div>
-        <p class="mb-4">
-          訂單編號：
-          <span>{{ showProduct.list._id }}</span>
-        </p>
-        <p class="mb-4">
-          是否付款：
-          <span v-if="truePaid(showProduct.list.products)"
-            >{{ truePaid(showProduct.list.products) }}筆已付款</span
-          >
-          <span
-            v-if="falsePaid(showProduct.list.products)"
-            class="ml-10 text-red-400"
-            >{{ falsePaid(showProduct.list.products) }}筆未付款</span
-          >
-        </p>
-        <p class="mb-">收件地址：</p>
-        <p>
-          姓名：
-          <span>{{ showProduct.list.addressId.name }}</span>
-        </p>
-        <p>
-          地址：
-          <span>
-            {{ showProduct.list.addressId.code }}
-            {{ showProduct.list.addressId.city }}
-            {{ showProduct.list.addressId.districts }}
-            {{ showProduct.list.addressId.street }}
-          </span>
-        </p>
-        <p>
-          電話：
-          <span>{{ showProduct.list.addressId.phone }}</span>
-        </p>
-
-        <p class="mt-4">
-          付款帳戶：
-          <span
-            >{{ showProduct.list.bankId.bankName }}
-            {{ showProduct.list.bankId.bankNumber }}</span
-          >
-        </p>
-        <div
-          v-for="item in showProduct.list.products"
-          :key="item._id"
-          class="flex flex-col lg:flex-row gap-6 mb-10 mt-8 lg: justify-around"
-        >
-          <img
-            :src="item.productId.image"
-            class="rounded-lg w-56 h-36 lg:w-80 lg:h-56 object-cover"
-          />
-          <div class="mt-2">
-            <p>
-              商品名稱：
-              <span>{{ item.productId.name }}</span>
-            </p>
-            <p>
-              商品數量：
-              <span>{{ item.quantity }}</span>
-            </p>
-            <p>
-              商品價格：
-              <span>{{ item.productId.price }}</span>
-            </p>
-          </div>
-          <div>
-            <div class="mt-2">
-              <p>收款帳戶：</p>
+        <h2 class="mb-6 font-bold text-xl">訂單資訊</h2>
+        <table class="mb-6 table-auto">
+          <tr>
+            <td class="p-2">訂單編號</td>
+            <td class="p-2">{{ showProduct.list._id }}</td>
+          </tr>
+          <tr>
+            <td class="p-2">收件地址</td>
+            <td class="p-2">
+              <div class="flex gap-1">
+                <p>{{ showProduct.list.addressId.name }}</p>
+                <p>{{ showProduct.list.addressId.phone }}</p>
+              </div>
+              <div class="flex gap-1">
+                <p>{{ showProduct.list.addressId.code }}</p>
+                <p>{{ showProduct.list.addressId.city }}</p>
+                <p>{{ showProduct.list.addressId.districts }}</p>
+                <p>{{ showProduct.list.addressId.street }}</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="p-2">付款帳戶</td>
+            <td class="p-2">
               <p>
-                {{ item.productId.bankId.bankName }}
+                <span
+                  >{{ showProduct.list.bankId.bankName }}
+                  {{ showProduct.list.bankId.bankNumber }}</span
+                >
               </p>
-              <p>{{ item.productId.bankId.bankNumber }}</p>
-            </div>
-            <p
-              v-if="item.paid.isPaid"
-              class="mt-2"
-              :class="{ 'text-red-400': item.shippingStatus === 0 }"
-            >
-              {{ item.shippingStatus === 0 ? '未出貨' : '已出貨' }}
-            </p>
-            <p v-if="item.shippingStatus === 2">已取消</p>
-            <Btn
-              text="付款"
-              class="w-full mt-6"
-              :disabled="item.paid.isPaid || item.shippingStatus === 2"
-              :class="{
-                'disabled: opacity-50':
-                  item.paid.isPaid || item.shippingStatus === 2,
-              }"
-              @click="
-                paidOrderHandler({
-                  orderId: showProduct.list._id,
-                  productId: item.productId._id,
-                })
-              "
-            />
-            <Btn
-              text="取消訂單"
-              class="w-full mt-6"
-              className="btn-outline"
-              :disabled="item.paid.isPaid || item.shippingStatus === 2"
-              :class="{
-                'disabled: opacity-50':
-                  item.paid.isPaid || item.shippingStatus === 2,
-              }"
-              @click="
-                cancelOrderHandler({
-                  orderId: showProduct.list._id,
-                  productId: item.productId._id,
-                })
-              "
-            />
-          </div>
-        </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="p-2">是否付款</td>
+            <td class="p-2">
+              <p v-if="truePaid(showProduct.list.products)">
+                {{ truePaid(showProduct.list.products) }}筆已付款
+              </p>
+              <p
+                v-if="falsePaid(showProduct.list.products)"
+                class="text-red-400"
+              >
+                {{ falsePaid(showProduct.list.products) }}筆未付款
+              </p>
+            </td>
+          </tr>
+        </table>
+        <table>
+          <thead>
+            <tr>
+              <td class="border-2 p-2">商品名稱</td>
+              <td class="border-2 p-2">商品數量</td>
+              <td class="border-2 p-2">商品價格</td>
+              <td class="border-2 p-2">收款帳戶</td>
+              <td class="border-2 p-2">訂單狀態</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in showProduct.list.products" :key="item._id">
+              <td class="border-2 p-2">
+                <img
+                  :src="item.productId.image"
+                  class="rounded-lg w-56 h-36 lg:w-80 lg:h-56 object-cover"
+                />
+              </td>
+              <td class="text-center border-2 p-2">
+                {{ item.quantity }}
+              </td>
+              <td class="text-center border-2 p-2">
+                {{ item.productId.price }}
+              </td>
+              <td class="border-2 p-2">
+                <p>{{ item.productId.bankId.bankName }}</p>
+                <p>{{ item.productId.bankId.bankNumber }}</p>
+              </td>
+              <td class="border-2 p-2">
+                <p
+                  v-if="item.paid.isPaid"
+                  class="text-center mb-2"
+                  :class="{ 'text-red-400': item.shippingStatus === 0 }"
+                >
+                  {{ item.shippingStatus === 0 ? '未出貨' : '已出貨' }}
+                </p>
+                <p v-if="item.shippingStatus === 2">已取消</p>
+                <Btn
+                  :text="item.paid.isPaid ? '已付款' : '未付款'"
+                  class="w-24 block mb-4"
+                  :disabled="item.paid.isPaid || item.shippingStatus === 2"
+                  :class="{
+                    'disabled: opacity-50':
+                      item.paid.isPaid || item.shippingStatus === 2,
+                  }"
+                  @click="
+                    paidOrderHandler({
+                      orderId: showProduct.list._id,
+                      productId: item.productId._id,
+                    })
+                  "
+                />
+                <Btn
+                  text="取消訂單"
+                  class="w-24 block"
+                  className="btn-outline"
+                  :disabled="item.paid.isPaid || item.shippingStatus === 2"
+                  :class="{
+                    'disabled: opacity-50':
+                      item.paid.isPaid || item.shippingStatus === 2,
+                  }"
+                  @click="
+                    cancelOrderHandler({
+                      orderId: showProduct.list._id,
+                      productId: item.productId._id,
+                    })
+                  "
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </Model>
   </div>
@@ -200,13 +206,13 @@ import Select from '@/components/ui/TheSelect.vue';
 
 import { useOrderStore } from '@/stores/orders';
 import { useModelStore } from '@/stores/model';
+import { useCategoryStore } from '@/stores/category';
 
 const order = useOrderStore();
 const { orderBuy, showProduct } = storeToRefs(order);
-const { paidOrderHandler, changeStatusOrderHandler, cancelOrderHandler } =
-  order;
+const { paidOrderHandler, cancelOrderHandler } = order;
 const { toggleShow } = storeToRefs(useModelStore());
-const sortOrder = ['未付款訂單', '已付款訂單', '已出貨訂單', '已取消訂單'];
+const { sortOrder } = useCategoryStore();
 
 const sortType = ref(sortOrder[0]);
 

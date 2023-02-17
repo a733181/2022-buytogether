@@ -10,7 +10,7 @@
             <th class="border-2 p-2">商品圖片</th>
             <th class="border-2 p-2">商品名稱</th>
             <th class="border-2 p-2">商品問題</th>
-            <th class="border-2 p-2">回覆</th>
+            <th class="border-2 p-2">留言回覆</th>
           </tr>
         </thead>
         <tbody>

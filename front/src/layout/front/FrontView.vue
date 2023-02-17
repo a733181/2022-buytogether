@@ -12,7 +12,7 @@
 
 <script setup>
 import Header from '@/layout/front/TheHeader.vue';
-import Footer from '@/layout/TheFooter.vue';
+import Footer from '@/layout/front/TheFooter.vue';
 </script>
 
 <style scoped>

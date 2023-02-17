@@ -1,6 +1,6 @@
 <template>
   <div class="container py-10">
-    <Breadcrumbs v-if="editBank.type != 'admin'" class="mb-10">
+    <Breadcrumbs v-if="editBank.type != 'admin'" class="mb-20">
       <div class="flex">
         <RouterLink
           to="/member/ship"
@@ -17,7 +17,7 @@
         </p>
       </div>
     </Breadcrumbs>
-    <Breadcrumbs v-else class="mb-10">
+    <Breadcrumbs v-else class="mb-20">
       <div class="flex">
         <RouterLink to="/member/shipadmin" class="hover:scale-105"
           >會員</RouterLink
@@ -33,45 +33,54 @@
       </div>
     </Breadcrumbs>
 
-    <form @submit.prevent="submitHandler">
-      <Input
-        title="代號"
-        v-model="form.bankName"
-        :error="error.bankName.error"
-        :errorText="error.bankName.value"
-        @click="error.bankName.error = false"
-        :select="bankNumberLists"
-      />
-      <Input
-        title="帳號"
-        v-model="form.bankNumber"
-        :error="error.bankNumber.error"
-        :errorText="error.bankNumber.value"
-        @click="error.bankNumber.error = false"
-        maxlength="16"
-      />
-      <Input
-        title="預設"
-        type="checkbox"
-        v-model="form.preset"
-        id="bankpreset"
-      />
-      <div class="flex justify-between mt-8">
-        <Btn
-          text="取消"
-          className="btn-outline"
-          class="w-1/3"
-          @click="cancelBankHandler"
-        />
-        <Btn
-          type="sumbit"
-          text="確定"
-          class="w-1/3"
-          :disabled="isLoading"
-          :loading="isLoading"
-        />
-      </div>
-    </form>
+    <div class="lg:w-1/2 mx-auto border-2 px-5 py-10 rounded-lg">
+      <form @submit.prevent="submitHandler">
+        <div class="flex gap-5 items-center">
+          <Input
+            title="代號"
+            class="w-1/4"
+            v-model="form.bankName"
+            :error="error.bankName.error"
+            :errorText="error.bankName.value"
+            @click="error.bankName.error = false"
+            :select="bankNumberLists"
+          />
+
+          <Input
+            title="帳號"
+            class="w-2/4"
+            v-model="form.bankNumber"
+            :error="error.bankNumber.error"
+            :errorText="error.bankNumber.value"
+            @click="error.bankNumber.error = false"
+            maxlength="16"
+          />
+          <Input
+            title="預設"
+            type="checkbox"
+            class="-mb-4"
+            v-model="form.preset"
+            id="bankpreset"
+          />
+        </div>
+
+        <div class="flex mt-8 gap-5 justify-center">
+          <Btn
+            text="取消"
+            className="btn-outline"
+            class="w-1/6"
+            @click="cancelBankHandler"
+          />
+          <Btn
+            type="sumbit"
+            text="確定"
+            class="w-1/6"
+            :disabled="isLoading"
+            :loading="isLoading"
+          />
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

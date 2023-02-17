@@ -145,7 +145,7 @@ input {
 }
 
 .image {
-  @apply w-full h-56 border-dashed border-2  object-cover rounded-lg;
+  @apply w-full h-56 border-dashed border-2  object-contain rounded-lg;
 }
 
 .image-title {

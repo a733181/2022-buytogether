@@ -1,14 +1,14 @@
 <template>
-  <p v-if="!categoryQuantity.length" class="text-center text-2xl">沒有資料</p>
-  <div v-else>
-    <div class="flex gap-8 items-center">
+  <div>
+    <div class="flex gap-8 items-center mb-10">
       <Select v-model="selectActive" :select="select" />
       <div class="flex items-center justify-center gap-4">
         <p>年份</p>
         <Select v-model="yearsActive" :select="years" />
       </div>
     </div>
-    <div class="w-[500px] h-[500px] mx-auto">
+    <p v-if="!categoryQuantity.length" class="text-center text-2xl">沒有資料</p>
+    <div v-else class="w-[500px] h-[500px] mx-auto">
       <Bar
         id="chart"
         :options="chartOptions"
