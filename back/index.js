@@ -70,9 +70,6 @@ const io = new Server(server, {
       (req.headers.origin.includes('github') ||
         req.headers.origin.includes('localhost') ||
         req.headers.origin.includes('127.0.0.1'));
-
-    console.log(req.headers.origin);
-    console.log(isAllowed);
     cb(null, isAllowed);
   },
 });
