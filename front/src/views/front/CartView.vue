@@ -1,5 +1,5 @@
 <template>
-  <div class="container pt-44 lg:pt-32 pb-10">
+  <div class="container pt-44 lg:pt-32 pb-10 overflow-auto">
     <Breadcrumbs class="mb-10">
       <p class="text-primary font-bold">購物車</p>
     </Breadcrumbs>
@@ -7,113 +7,106 @@
       <h1>購物車內沒有商品</h1>
       <RouterLink to="/" class="text-primary">前往購物</RouterLink>
     </div>
+
     <form @submit.prevent="submitHandler" v-if="cart.length" class="mb-20">
-      <table class="w-full">
-        <thead>
-          <tr>
-            <th class="border-2 p-2">圖片</th>
-            <th class="border-2 p-2">名稱</th>
-            <th class="border-2 p-2">數量</th>
-            <th class="border-2 p-2">單價</th>
-            <th class="border-2 p-2">小計</th>
-            <th class="border-2 p-2">刪除</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in cart.list">
-            <td class="border-2 p-2">
-              <img
-                :src="item.productId.image"
-                :alt="item.productId.name"
-                class="w-1/2 mx-auto h-32 object-cover rounded-lg"
-              />
-            </td>
-            <td class="border-2 p-2 text-center">
-              <p>{{ item.productId.name }}</p>
-            </td>
-            <td class="border-2 p-2">
-              <div class="flex justify-center items-center gap-3 lg:gap-6">
+      <div class="overflow-auto">
+        <table class="w-full table-fixed lg:table-auto">
+          <thead>
+            <tr>
+              <th class="border-2 p-2 w-[150px] lg:w-auto">圖片</th>
+              <th class="border-2 p-2 w-[100px] lg:w-auto">名稱</th>
+              <th class="border-2 p-2 w-[100px] lg:w-auto">數量</th>
+              <th class="border-2 p-2 w-[100px] lg:w-auto">單價</th>
+              <th class="border-2 p-2 w-[100px] lg:w-auto">小計</th>
+              <th class="border-2 p-2 w-[60px] lg:w-auto">刪除</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in cart.list">
+              <td class="border-2 p-2">
                 <img
-                  src="@/assets/svg/minus.svg"
-                  class="w-5 hover:opacity-60"
+                  :src="item.productId.image"
+                  :alt="item.productId.name"
+                  class="w-32 h-32 mx-auto object-cover rounded-lg"
+                />
+              </td>
+              <td class="border-2 p-2 text-center">
+                <p>{{ item.productId.name }}</p>
+              </td>
+              <td class="border-2 p-2">
+                <div class="flex justify-center items-center gap-3 lg:gap-6">
+                  <img
+                    src="@/assets/svg/minus.svg"
+                    class="w-5 hover:opacity-60"
+                    @click="
+                      changeNumber({ id: item.productId._id, quantity: -1 })
+                    "
+                  />
+                  <p>{{ item.quantity }}</p>
+                  <img
+                    src="@/assets/svg/plus.svg"
+                    class="w-5 hover:opacity-60"
+                    @click="changeNumber({ id: item.productId._id })"
+                  />
+                </div>
+              </td>
+              <td class="border-2 p-2 text-center">
+                {{ item.productId.price }}
+              </td>
+              <td class="border-2 p-2 text-center">
+                {{ item.quantity * item.productId.price }}
+              </td>
+              <td class="border-2 p-2">
+                <img
+                  src="@/assets/svg/delete.svg"
+                  class="w-6 hover:opacity-60 mx-auto"
                   @click="
-                    changeNumber({ id: item.productId._id, quantity: -1 })
+                    changeNumber({ id: item.productId._id, type: 'delete' })
                   "
                 />
-                <p>{{ item.quantity }}</p>
-                <img
-                  src="@/assets/svg/plus.svg"
-                  class="w-5 hover:opacity-60"
-                  @click="changeNumber({ id: item.productId._id })"
-                />
-              </div>
-            </td>
-            <td class="border-2 p-2 text-center">{{ item.productId.price }}</td>
-            <td class="border-2 p-2 text-center">
-              {{ item.quantity * item.productId.price }}
-            </td>
-            <td class="border-2 p-2">
-              <img
-                src="@/assets/svg/delete.svg"
-                class="w-6 hover:opacity-60 mx-auto"
-                @click="
-                  changeNumber({ id: item.productId._id, type: 'delete' })
-                "
-              />
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3"></td>
-            <td class="text-center p-4">
-              <p>總計</p>
-            </td>
-            <td class="text-center p-4">
-              <p>{{ sumTotal }}</p>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="6">
-              <div class="w-1/2 ml-auto">
-                <Input
-                  v-model="form.bank"
-                  title="付款帳戶"
-                  :select="bankNewList"
-                  :error="error.bank.error"
-                  :errorText="error.bank.value"
-                  @click="error.bank.error = false"
-                />
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="6">
-              <div class="w-1/2 ml-auto">
-                <Input
-                  v-model="form.address"
-                  title="收件地址"
-                  :select="addressNewList"
-                  :error="error.address.error"
-                  :errorText="error.address.value"
-                  @click="error.address.error = false"
-                />
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="4"></td>
-            <td colspan="2">
-              <Btn
-                text="確定"
-                class="w-full mt-6"
-                @click="submitHandler"
-                :disabled="isLoading"
-                :loading="isLoading"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+              <td class="text-center p-4">
+                <p>總計</p>
+              </td>
+              <td class="text-center p-4">
+                <p>{{ sumTotal }}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="lg:w-1/3 lg:ml-auto">
+        <Input
+          v-model="form.bank"
+          title="付款帳戶"
+          :select="bankNewList"
+          :error="error.bank.error"
+          :errorText="error.bank.value"
+          @click="error.bank.error = false"
+        />
+      </div>
+      <div class="lg:w-1/3 lg:ml-auto">
+        <Input
+          v-model="form.address"
+          title="收件地址"
+          :select="addressNewList"
+          :error="error.address.error"
+          :errorText="error.address.value"
+          @click="error.address.error = false"
+        />
+      </div>
+      <Btn
+        text="確定"
+        class="w-3/12 lg:w-2/12 mt-6 ml-auto block"
+        @click="submitHandler"
+        :disabled="isLoading"
+        :loading="isLoading"
+      />
     </form>
+
     <TheMoreProduct :category="'全部'" v-if="cart.length" />
   </div>
 </template>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
 import { api, apiAuth } from '@/axios/index';
 import router from '@/router/index';
@@ -45,6 +45,9 @@ export const useProductsStore = defineStore('products', () => {
     total: 1,
     current: 1,
   });
+
+  const toggleProductCategory = ref(false);
+  const toggleCollectCategory = ref(false);
 
   const editProduct = computed(() => product.edit);
   const listProduct = computed(() => product.list);
@@ -323,6 +326,8 @@ export const useProductsStore = defineStore('products', () => {
     sellFatorite,
     productPage,
     sellMoreProduct,
+    toggleProductCategory,
+    toggleCollectCategory,
     addProductHandler,
     sumbitProductHandler,
     getAllProductHandler,

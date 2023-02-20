@@ -19,10 +19,17 @@
 
       <nav>
         <ul class="flex gap-4 py-2 items-center justify-center">
+          <li
+            v-if="route.path === '/' || route.path === '/tracklist'"
+            class="px-2 py-2 lg:hidden cursor-pointer"
+            @click="toggleCategory()"
+          >
+            商品分類
+          </li>
           <li>
             <RouterLink
               to="/about"
-              class="px-3 py-2 rounded-lg hover:opacity-60"
+              class="px-3 py-2 rounded-lg hover:opacity-60 block"
               :class="activeClass('/about')"
               >關於本站</RouterLink
             >
@@ -30,7 +37,7 @@
           <li v-if="user.isMember">
             <RouterLink
               to="/tracklist"
-              class="px-3 py-2 rounded-lg hover:opacity-60"
+              class="px-3 py-2 rounded-lg hover:opacity-60 block"
               :class="activeClass('/tracklist')"
               >收藏商品</RouterLink
             >
@@ -77,7 +84,7 @@ import { useCartStore } from '@/stores/carts';
 import { useBankStore } from '@/stores/bank';
 import { useAddressStore } from '@/stores/address';
 import { useSwalStore } from '@/stores/swal';
-import { useChatsStore } from '@/stores/chats';
+import { useProductsStore } from '@/stores/products';
 
 const route = useRoute();
 const router = useRouter();
@@ -88,7 +95,9 @@ const { cart } = storeToRefs(carts);
 const { listAddress } = storeToRefs(useAddressStore());
 const { listBank } = storeToRefs(useBankStore());
 const { swalError } = useSwalStore();
-const { showList, showChat } = storeToRefs(useChatsStore());
+const { toggleProductCategory, toggleCollectCategory } = storeToRefs(
+  useProductsStore()
+);
 
 const activeClass = (active) => {
   return route.path === active ? 'text-primary bg-white' : null;
@@ -118,8 +127,11 @@ const toCart = () => {
   router.push('/cart');
 };
 
-const toggleChatHandler = () => {
-  showList.value = !showList.value;
-  showChat.value = false;
+const toggleCategory = () => {
+  if (route.path === '/') {
+    toggleProductCategory.value = !toggleProductCategory.value;
+  } else if (route.path === '/tracklist') {
+    toggleCollectCategory.value = !toggleCollectCategory.value;
+  }
 };
 </script>

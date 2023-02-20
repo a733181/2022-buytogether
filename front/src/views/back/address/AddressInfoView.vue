@@ -34,7 +34,7 @@
         </p>
       </div>
     </Breadcrumbs>
-    <div class="w-1/2 mx-auto">
+    <div class="lg:w-1/2 mx-auto">
       <form @submit.prevent="submitHandler">
         <div class="grid gap-5 grid-cols-3">
           <Input title="郵遞區號" :disabled="true" v-model="form.code" />

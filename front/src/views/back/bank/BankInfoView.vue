@@ -36,15 +36,16 @@
     <div class="lg:w-1/2 mx-auto border-2 px-5 py-10 rounded-lg">
       <form @submit.prevent="submitHandler">
         <div class="flex gap-5 items-center">
-          <Input
-            title="代號"
-            class="w-1/4"
-            v-model="form.bankName"
-            :error="error.bankName.error"
-            :errorText="error.bankName.value"
-            @click="error.bankName.error = false"
-            :select="bankNumberLists"
-          />
+          <div class="w-1/4">
+            <Input
+              title="代號"
+              v-model="form.bankName"
+              :error="error.bankName.error"
+              :errorText="error.bankName.value"
+              @click="error.bankName.error = false"
+              :select="bankNumberLists"
+            />
+          </div>
 
           <Input
             title="帳號"

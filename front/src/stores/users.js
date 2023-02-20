@@ -229,14 +229,10 @@ export const useUserStore = defineStore(
     };
 
     const clickListHandler = async ({ id, type = 'track' }) => {
-      console.log(id);
       if (!isLoginHandler()) return;
       try {
         const indexTrack = users.track.findIndex((item) => item === id);
         const indexBlack = users.black.findIndex((item) => item === id);
-
-        console.log(indexTrack, indexBlack);
-
         await apiAuth.patch('/users/list', { id, type });
         if (type === 'track') {
           changeListHalder(indexTrack, users.track, id);
