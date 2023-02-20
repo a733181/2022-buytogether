@@ -11,9 +11,8 @@ export const useChatsStore = defineStore('chats', () => {
   const { swalSuccess, swalError } = useSwalStore();
   const socket = reactive({});
   socket.current = io(import.meta.env.VITE_API, {
-    transports: ['websocket'],
     extraHeaders: {
-      socket: 'socketclient',
+      header: 'socket',
     },
   });
 
