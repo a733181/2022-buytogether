@@ -42,7 +42,8 @@
             class="w-full"
           />
         </div>
-        <p v-if="!filterData.length" class="text-3xl">找不到商品</p>
+        <p v-if="!filterData.length && !isLoad" class="text-3xl">找不到商品</p>
+        <p v-if="isLoad" class="text-3xl">資料讀取中</p>
         <div class="w-min mx-auto">
           <Pagination
             v-if="productPage.total > 1"
