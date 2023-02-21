@@ -99,6 +99,8 @@ export const useChatsStore = defineStore('chats', () => {
 
   const sendChatHandler = async () => {
     try {
+      if (message.value === '') return;
+
       await apiAuth.post('/chat', {
         fromUserId: fromUserId.value,
         toUserId: toUser._id,

@@ -146,7 +146,9 @@ export const editUser = async (req, res) => {
     if (repeatPassword) {
       res.status(400).json({ success: false, message: '密碼重複' });
     } else {
-      req.user.password = req.body.password;
+      if (req.body.password !== '') {
+        req.user.password = req.body.password;
+      }
       await req.user.save();
 
       if (imageUrl) {
