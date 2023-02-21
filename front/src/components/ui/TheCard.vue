@@ -7,7 +7,6 @@
           :src="data.image"
         />
       </RouterLink>
-      <div></div>
       <div
         class="absolute top-2 right-2 flex flex-col justify-center items-center"
       >

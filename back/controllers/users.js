@@ -4,6 +4,7 @@ import banks from '../models/banks.js';
 import address from '../models/address.js';
 import products from '../models/products.js';
 import orders from '../models/orders.js';
+import bcrypt from 'bcrypt';
 
 const showError = (error, res) => {
   if (error.name === 'ValidationError') {
@@ -133,62 +134,79 @@ export const getUser = async (req, res) => {
 export const editUser = async (req, res) => {
   try {
     const imageUrl = req.files.image ? req.files.image[0].path : null;
-    if (Object.keys(req.body)[0] === 'name') {
-      req.user.name = req.body.name;
-      if (imageUrl) {
-        req.user.image = imageUrl;
-      }
-    }
-    if (Object.keys(req.body)[0] === 'email') {
-      req.user.email = req.body.email;
-    }
-    await req.user.save();
+    req.user.name = req.body.name || req.user.name;
+    req.user.email = req.body.email || req.user.email;
 
     if (imageUrl) {
-      res.status(200).json({
-        success: true,
-        message: '',
-        result: {
-          name: req.user.name,
-          image: req.user.image,
-        },
-      });
+      req.user.image = imageUrl;
+    }
+
+    const repeatPassword = bcrypt.compareSync(req.body.password, req.user.password);
+
+    if (repeatPassword) {
+      res.status(400).json({ success: false, message: '密碼重複' });
     } else {
-      res.status(200).json({
-        success: true,
-        message: '',
-        result: '',
-      });
+      req.user.password = req.body.password;
+      await req.user.save();
+
+      if (imageUrl) {
+        res.status(200).json({
+          success: true,
+          message: '',
+          result: {
+            name: req.user.name,
+            image: req.user.image,
+          },
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: '',
+          result: '',
+        });
+      }
     }
   } catch (error) {
+    console.log(error);
     showError(error, res);
   }
 };
 
 export const adminEditUser = async (req, res) => {
   try {
+    const result = await users.findById(req.body.id);
+
     const imageUrl = req.files.image ? req.files.image[0].path : null;
-    const data = {
-      name: req.body.name,
-      phone: req.body.phone,
-    };
 
-    if (imageUrl) {
-      data.image = imageUrl;
+    const repeatPassword = bcrypt.compareSync(req.body.password, result.password);
+
+    if (repeatPassword) {
+      res.status(400).json({ success: false, message: '密碼重複' });
+    } else {
+      result.name = req.body.name || result.name;
+      result.phone = req.body.phone || result.phone;
+      result.password = req.body.password;
+
+      if (imageUrl) {
+        result.image = imageUrl;
+      }
+      if (req.body.email) {
+        result.email = req.body.email;
+      }
+      await result.save();
+
+      res.status(200).json({
+        success: true,
+        message: '',
+        result: {
+          _id: result._id,
+          phone: result.phone,
+          name: result.name,
+          email: result.email,
+          image: result.image,
+        },
+      });
     }
-    if (req.body.email) {
-      data.email = req.body.email;
-    }
-
-    const result = await users
-      .findByIdAndUpdate(req.body.id, data, { new: true })
-      .select('-status -password');
-
-    res.status(200).json({
-      success: true,
-      message: '',
-      result,
-    });
   } catch (error) {
     showError(error, res);
   }

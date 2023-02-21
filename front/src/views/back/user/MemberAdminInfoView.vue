@@ -28,6 +28,15 @@
           @click="error.name.error = false"
         />
         <Input
+          title="密碼"
+          class="mb-8"
+          type="password"
+          v-model="form.password"
+          :error="error.password.error"
+          :errorText="error.password.value"
+          @click="error.password.error = false"
+        />
+        <Input
           title="Email"
           type="email"
           class="mb-8"
@@ -89,6 +98,10 @@ const error = reactive({
     type: String,
     error: false,
   },
+  password: {
+    type: String,
+    error: false,
+  },
   email: {
     type: String,
     error: false,
@@ -102,6 +115,7 @@ const error = reactive({
 const form = reactive({
   _id: userAdmin.value.edit._id || '',
   name: userAdmin.value.edit.name || '',
+  password: '',
   image: userAdmin.value.edit.image || '',
   email: userAdmin.value.edit.email || '',
   phone: userAdmin.value.edit.phone || '',
@@ -111,6 +125,14 @@ const validatorFormHandler = () => {
   if (validator.isEmpty(form.name)) {
     error.name.value = '為必填';
     error.name.error = true;
+    return true;
+  }
+  if (
+    form.password !== '' &&
+    !validator.isByteLength(form.password, { min: 4, max: 20 })
+  ) {
+    error.password.value = '長度大於 4 小於 20';
+    error.password.error = true;
     return true;
   }
   if (!validator.isByteLength(form.name, { max: 12 })) {
@@ -125,21 +147,17 @@ const submitHandler = async () => {
   if (validatorFormHandler()) return;
   isLoading.value = true;
   const fd = new FormData();
+  fd.append('id', form._id);
+  fd.append('name', form.name);
+  fd.append('phone', form.phone);
+  fd.append('email', form.email);
+  fd.append('password', form.password);
   if (
     form.image &&
     form.image !== userAdmin.value.edit.image &&
     form.image.type.startsWith('image/')
   ) {
-    fd.append('id', form._id);
-    fd.append('name', form.name);
     fd.append('image', form.image);
-    fd.append('phone', form.phone);
-    fd.append('email', form.email);
-  } else {
-    fd.append('id', form._id);
-    fd.append('name', form.name);
-    fd.append('phone', form.phone);
-    fd.append('email', form.email);
   }
   await editAdminUserHander(fd);
   isLoading.value = false;

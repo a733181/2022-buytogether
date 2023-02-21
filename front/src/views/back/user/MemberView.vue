@@ -9,7 +9,7 @@
       <div
         class="mb-4 flex lg:items-center flex-col lg:flex-row gap-2 border-b-2 pb-4"
       >
-        <p class="lg:w-2/12">名稱</p>
+        <p class="lg:w-2/12">個人資訊</p>
         <div class="flex-1 flex justify-between items-center">
           <div class="flex items-center">
             <img
