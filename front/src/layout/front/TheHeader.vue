@@ -1,5 +1,6 @@
 <template>
   <header
+    ref="navBar"
     class="fixed w-full bg-primary py-3 text-white border-b-8 border-orange-300 z-20"
   >
     <div
@@ -76,8 +77,11 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 import { useUserStore } from '@/stores/users';
 import { useCartStore } from '@/stores/carts';
@@ -85,7 +89,6 @@ import { useBankStore } from '@/stores/bank';
 import { useAddressStore } from '@/stores/address';
 import { useSwalStore } from '@/stores/swal';
 import { useProductsStore } from '@/stores/products';
-
 const route = useRoute();
 const router = useRouter();
 
@@ -98,6 +101,8 @@ const { swalError } = useSwalStore();
 const { toggleProductCategory, toggleCollectCategory } = storeToRefs(
   useProductsStore()
 );
+
+const navBar = ref(null);
 
 const activeClass = (active) => {
   return route.path === active ? 'text-primary bg-white' : null;
@@ -134,4 +139,25 @@ const toggleCategory = () => {
     toggleCollectCategory.value = !toggleCollectCategory.value;
   }
 };
+
+onMounted(() => {
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.from(navBar.value, {
+    yPercent: -100,
+    paused: false,
+    duration: 0.5,
+    scrollTrigger: {
+      start: 'top 60',
+      end: () => document.documentElement.scrollHeight,
+      onEnter(self) {
+        self.animation.play();
+      },
+      onUpdate(self) {
+        self.direction === -1
+          ? self.animation.play()
+          : self.animation.reverse();
+      },
+    },
+  });
+});
 </script>

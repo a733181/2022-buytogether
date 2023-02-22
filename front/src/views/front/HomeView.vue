@@ -7,7 +7,11 @@
       </Breadcrumbs>
     </div>
     <div class="flex mb-6 gap-7 items-center justify-between">
-      <Select v-model="filter" :select="sortProduct" class="w-32 h-[44px]" />
+      <Select
+        v-model="filter"
+        :select="sortProduct"
+        class="toend w-32 h-[44px]"
+      />
 
       <form @submit.prevent="submitHandler" class="flex gap-5 items-center">
         <Input v-model="searchKey" class="-mt-10" />
@@ -16,7 +20,7 @@
     </div>
 
     <div class="flex">
-      <div class="lg:flex gap-5 flex-col mr-10 lg:w-32 hidden">
+      <div class="toend lg:flex gap-5 flex-col mr-10 lg:w-32 hidden">
         <Tab
           tab="全部"
           :active="activeTab"
@@ -32,14 +36,15 @@
       </div>
       <div class="flex-1">
         <div
-          v-if="filterData.length"
           class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-10"
+          v-if="filterData.length"
+          ref="cards"
         >
           <Card
+            class="card w-full"
             v-for="item in filterData"
             :key="item._id"
             :data="item"
-            class="w-full"
           />
         </div>
         <p v-if="!filterData.length && !isLoad" class="text-3xl">找不到商品</p>
@@ -90,7 +95,10 @@
 
 <script setup>
 import { storeToRefs } from 'pinia';
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed, onUnmounted, onMounted } from 'vue';
+
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 import Breadcrumbs from '@/components/ui/TheBreadcrumbs.vue';
 import Tab from '@/components/ui/TheTab.vue';
@@ -115,6 +123,9 @@ const breadSearch = ref('');
 const filter = ref(sortProduct[0]);
 const searchKey = ref('');
 const isLoad = ref(true);
+const cards = ref(null);
+
+gsap.registerPlugin(ScrollTrigger);
 
 (async () => {
   await getAllsellProductHandler();
@@ -177,6 +188,13 @@ const changePageHandler = (page) => {
   productPage.value.current = page;
   getAllsellProductHandler({ category: activeTab.value });
 };
+
+onMounted(() => {
+  gsap.from('.toend', {
+    x: '-100%',
+    duration: 1,
+  });
+});
 
 onUnmounted(() => {
   productPage.value.current = 1;

@@ -5,7 +5,7 @@
       <RouterLink to="/" class="text-primary">前往首頁</RouterLink>
     </div>
     <div class="flex">
-      <div class="hidden lg:flex gap-5 flex-col mr-10 lg:w-32">
+      <div class="toend hidden lg:flex gap-5 flex-col mr-10 lg:w-32">
         <Tab tab="全部" :active="activeTab" @click="activeTab = '全部'" />
         <Tab
           v-for="(item, index) in productCategory"
@@ -58,8 +58,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 import Tab from '@/components/ui/TheTab.vue';
 import Card from '@/components/ui/TheCard.vue';
@@ -85,4 +87,12 @@ const toggleCollectCategoryHandler = (item) => {
   activeTab.value = item;
   toggleCollectCategory.value = false;
 };
+
+onMounted(() => {
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.from('.toend', {
+    x: '-100%',
+    duration: 0.5,
+  });
+});
 </script>
