@@ -4,14 +4,7 @@
       <h2>沒有收藏商品</h2>
       <RouterLink to="/" class="text-primary">前往首頁</RouterLink>
     </div>
-    <div
-      v-if="!filterProduct.length"
-      class="text-2xl flex gap-8 justify-center"
-    >
-      <h2>找不到收藏商品</h2>
-      <RouterLink to="/" class="text-primary">前往首頁</RouterLink>
-    </div>
-    <div v-if="filterProduct.length" class="flex">
+    <div class="flex">
       <div class="hidden lg:flex gap-5 flex-col mr-10 lg:w-32">
         <Tab tab="全部" :active="activeTab" @click="activeTab = '全部'" />
         <Tab
@@ -25,6 +18,10 @@
       <div class="flex-1">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-10">
           <Card v-for="item in filterProduct" :key="item._id" :data="item" />
+          <div v-if="!filterProduct.length" class="text-2xl flex gap-8">
+            <h2 class="font-bold">找不到收藏商品</h2>
+            <RouterLink to="/" class="text-primary">前往首頁</RouterLink>
+          </div>
         </div>
       </div>
     </div>

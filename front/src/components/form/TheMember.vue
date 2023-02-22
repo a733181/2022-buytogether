@@ -16,6 +16,7 @@
       :error="error.password.error"
       :errorText="error.password.value"
       @click="error.password.error = false"
+      maxlength="20"
     />
     <div class="flex justify-between mt-10">
       <Btn
@@ -99,7 +100,10 @@ const validatorFormHandler = () => {
     error.phone.error = true;
     return true;
   }
-  if (!validator.isByteLength(form.password, { min: 4, max: 20 })) {
+  if (
+    form.password !== '' &&
+    !validator.isByteLength(form.password, { min: 4, max: 20 })
+  ) {
     error.password.value = '長度大於 4 小於 20';
     error.password.error = true;
     return true;

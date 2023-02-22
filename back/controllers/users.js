@@ -187,7 +187,9 @@ export const adminEditUser = async (req, res) => {
     } else {
       result.name = req.body.name || result.name;
       result.phone = req.body.phone || result.phone;
-      result.password = req.body.password;
+      if (req.body.password !== '') {
+        result.password = req.body.password;
+      }
 
       if (imageUrl) {
         result.image = imageUrl;

@@ -111,7 +111,7 @@
           </div>
           <img
             v-else
-            class="rounded-xl object-contain w-full h-full mb-5"
+            class="rounded-xl object-contain w-[90%] h-full mx-auto lg:full mb-5"
             :src="activeImage"
             :alt="sellProduct.name"
           />

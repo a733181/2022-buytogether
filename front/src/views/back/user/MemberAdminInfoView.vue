@@ -35,6 +35,7 @@
           :error="error.password.error"
           :errorText="error.password.value"
           @click="error.password.error = false"
+          maxlength="20"
         />
         <Input
           title="Email"
@@ -52,6 +53,7 @@
           :error="error.phone.error"
           :errorText="error.phone.value"
           @click="error.phone.error = false"
+          maxlength="10"
         />
         <div class="flex justify-between mt-8">
           <Btn

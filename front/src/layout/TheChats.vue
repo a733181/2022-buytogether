@@ -36,11 +36,11 @@
     </div>
     <div v-if="showChat" class="h-[calc(500px-44px)]">
       <div class="flex items-center justify-between p-2">
-        <div class="flex gap-3">
+        <div class="flex gap-3 items-center">
           <img
             :src="toUser.image"
             :alt="toUser.name"
-            class="w-6 object-cover rounded-full"
+            class="w-6 h-6 object-cover rounded-full"
           />
           <p>{{ toUser.name }}</p>
         </div>
