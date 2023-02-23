@@ -38,10 +38,9 @@
         <div
           class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-10"
           v-if="filterData.length"
-          ref="cards"
         >
           <Card
-            class="card w-full"
+            class="w-full"
             v-for="item in filterData"
             :key="item._id"
             :data="item"
@@ -123,7 +122,6 @@ const breadSearch = ref('');
 const filter = ref(sortProduct[0]);
 const searchKey = ref('');
 const isLoad = ref(true);
-const cards = ref(null);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -188,6 +186,8 @@ const changePageHandler = (page) => {
   productPage.value.current = page;
   getAllsellProductHandler({ category: activeTab.value });
 };
+
+gsap.registerPlugin(ScrollTrigger);
 
 onMounted(() => {
   gsap.from('.toend', {

@@ -140,13 +140,15 @@ const toggleCategory = () => {
   }
 };
 
+gsap.registerPlugin(ScrollTrigger);
+
 onMounted(() => {
-  gsap.registerPlugin(ScrollTrigger);
   gsap.from(navBar.value, {
     yPercent: -100,
     paused: false,
     duration: 0.5,
     scrollTrigger: {
+      id: 'nav',
       start: 'top 60',
       end: () => document.documentElement.scrollHeight,
       onEnter(self) {

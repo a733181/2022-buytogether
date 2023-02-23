@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import { reactive, computed } from 'vue';
 
-import { api, apiAuth } from '@/axios/index';
+import { apiAuth } from '@/axios/index';
 
 import { useSwalStore } from '@/stores/swal';
-import { useUserStore } from '@/stores/users';
 
 export const useContactStore = defineStore('contacts', () => {
   const { swalSuccess, swalError } = useSwalStore();

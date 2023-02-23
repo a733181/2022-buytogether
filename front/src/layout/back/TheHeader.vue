@@ -2,7 +2,7 @@
   <!-- lg:translate-y-0 -->
   <header>
     <div
-      class="fixed z-20 bg-primary cursor-pointer top-0 right-0 px-3 py-2 block lg:hidden rounded-lg"
+      class="fixed z-20 bg-primary cursor-pointer top-1 right-4 px-3 py-2 block lg:hidden rounded-lg"
       @click="toggleNav = !toggleNav"
     >
       <img src="@/assets/svg/bars-solid.svg" alt="bar" class="w-6" />

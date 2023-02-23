@@ -33,7 +33,7 @@
       <h2 class="text-4xl">聯絡我們</h2>
       <SendMessage
         ref="top"
-        class="w-1/2 mx-auto"
+        class="abc w-1/2 mx-auto"
         classText="h-40"
         @message="submitHandler"
         :isLoading="isLoading"
@@ -52,7 +52,6 @@ import SendMessage from '@/components/ui/SendProductMessage.vue';
 
 import { useContactStore } from '@/stores/contact';
 
-gsap.registerPlugin(ScrollTrigger);
 const contact = useContactStore();
 const { sumbitContactHandler } = contact;
 
@@ -67,7 +66,9 @@ const submitHandler = async (form) => {
   isLoading.value = true;
 };
 
-onMounted(() => {
+gsap.registerPlugin(ScrollTrigger);
+
+onMounted(async () => {
   gsap.fromTo(
     start.value,
     {
@@ -92,5 +93,18 @@ onMounted(() => {
       duration: 1,
     }
   );
+
+  setTimeout(() => {
+    gsap.from(top.value.$el, {
+      y: 100,
+      duration: 1,
+      scrollTrigger: {
+        id: 'about',
+        trigger: top.value.$el,
+        start: 'top bottom',
+        end: 'bottom center',
+      },
+    });
+  }, 250);
 });
 </script>
