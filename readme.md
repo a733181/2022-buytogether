@@ -4,7 +4,7 @@
 
 ### 使用 Vite、Vue、Vue-router、pinia 建置
 
-### 引入 ESLint、Axios、Swiper、vue-chartjs、SweetAlert2、Validator、Socket.io
+### 引入 ESLint、Axios、Swiper、vue-chartjs、SweetAlert2、Validator、Socket.io、Tailwind CSS、GSAP
 
 - 使用 ESLint 檢查程式碼是否符合規則
 - 使用 Axios 呼叫 API
@@ -13,6 +13,8 @@
 - 使用 SweetAlert2 跳出成功及錯誤通知
 - 使用 Validator 驗證輸入表單
 - 使用 Socket.io 製作私訊聊天室
+- 使用 Tailwind CSS 進行切版
+- 使用 GSAP 製作動畫
 
 ## 後端
 
