@@ -9,13 +9,26 @@
 ## 前端
 
 - 使用 Vite 搭建開發環境，Vue 作為主要框架，Vue-router 管理路由，Pinia 集中管理資料狀態。
-- 整合 ESLint、Axios、Swiper、vue-chartjs、SweetAlert2、Validator、Socket.io、- Tailwind CSS、GSAP 等第三方套件，增強功能和提升使用體驗。
+- 整合 ESLint、Axios、Swiper、Vue-Chartjs、SweetAlert2、Validator、Socket.io、- Tailwind CSS、GSAP 等第三方套件，增強功能和提升使用體驗。
 - 使用 ESLint 做程式碼檢查，確保程式碼符合規範。
-- 使用 Axios 處理 API 請求，Swiper 製作輪播圖，vue-chartjs 製作後台訂單圖表，SweetAlert2 提供成功或錯誤提示，Validator 驗證表單，Socket.io 製作私訊聊天室，Tailwind CSS 為 CSS 框架，GSAP 製作動畫效果。
+- 使用 Axios 處理 API 請求。
+- 使用 Swiper 製作商品輪播圖。
+- 使用 vue-chartjs 製作後台購買及銷售訂單圖表。
+- 使用 SweetAlert2 提供新增、修改成功跟新增、修改、刪除錯誤等等提示。
+- 使用 Validator 驗證表單資料。
+- 使用 Socket.io 製作私訊聊天室，讓團主與團員溝通更加流暢。
+- 使用 Tailwind CSS 為 CSS 框架。
+- 使用 GSAP 製作動畫及視差滾動效果。
 
 ## 後端
 
-- 使用 node express 建立伺服器，引入 bcrypt、cloudinary、cors、mongoose、multer、passport、socket.io、Validator、ESLint 等套件。
-- 整合 ESLint、bcrypt、cloudinary、cors、mongoose、multer、passport、socket.io、Validator 等第三方套件，增強功能和提升使用體驗。
+- 使用 node express 建立伺服器。
+- 整合 ESLint、Bcrypt、Cloudinary、Cors、Mongoose、Multer、Passport、Socket.io、Validator 等第三方套件，增強功能和提升使用體驗。
 - 使用 ESLint 做程式碼檢查，確保程式碼符合規範。
-- 使用 bcrypt 密碼加密，Mongoose 連接 MongoDB 資料庫，passport 比對登入密碼，Validator 驗證資料欄位，multer 上傳圖片至 Cloudinary，Socket.io 製作私訊聊天室，cors 解決資源跨域。
+- 使用 Mongoose 連接 MongoDB 資料庫。
+- 使用 Bcrypt 密碼加密。
+- 使用 Passport 比對登入密碼。
+- 使用 Validator 驗證輸入資料。
+- 使用 Multer 上傳圖片至 Cloudinary。
+- 使用 Socket.io 製作私訊聊天室
+- 使用 Cors 解決資源跨域。
