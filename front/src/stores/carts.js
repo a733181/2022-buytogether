@@ -9,9 +9,8 @@ import { useUserStore } from '@/stores/users';
 
 export const useCartStore = defineStore('carts', () => {
   const user = useUserStore();
-  const { isLoginHandler } = user;
 
-  const { swalSuccess, swalError } = useSwalStore();
+  const { swalError } = useSwalStore();
 
   const cart = reactive({
     list: [],
