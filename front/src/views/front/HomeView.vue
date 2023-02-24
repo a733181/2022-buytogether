@@ -97,7 +97,6 @@ import { storeToRefs } from 'pinia';
 import { ref, computed, onUnmounted, onMounted } from 'vue';
 
 import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
 
 import Breadcrumbs from '@/components/ui/TheBreadcrumbs.vue';
 import Tab from '@/components/ui/TheTab.vue';
@@ -122,8 +121,6 @@ const breadSearch = ref('');
 const filter = ref(sortProduct[0]);
 const searchKey = ref('');
 const isLoad = ref(true);
-
-gsap.registerPlugin(ScrollTrigger);
 
 (async () => {
   await getAllsellProductHandler();
@@ -186,8 +183,6 @@ const changePageHandler = (page) => {
   productPage.value.current = page;
   getAllsellProductHandler({ category: activeTab.value });
 };
-
-gsap.registerPlugin(ScrollTrigger);
 
 onMounted(() => {
   gsap.from('.toend', {

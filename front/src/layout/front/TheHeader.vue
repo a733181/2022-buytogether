@@ -80,6 +80,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 

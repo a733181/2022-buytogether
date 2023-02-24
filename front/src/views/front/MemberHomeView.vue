@@ -9,7 +9,7 @@
         <span v-if="breadSearch">&ensp;/&ensp;{{ breadSearch }}</span>
       </div>
     </Breadcrumbs>
-    <div class="flex flex-row items-center gap-4 mb-10">
+    <div class="tobottom flex flex-row items-center gap-4 mb-10">
       <img
         :src="memberHomeProduct?.member.image || ''"
         :alt="memberHomeProduct?.member.name || ''"
@@ -49,9 +49,13 @@
       </div>
     </div>
     <div class="flex mb-6 gap-7 items-center justify-between">
-      <Select v-model="filter" :select="sortProduct" class="w-32 h-[44px]" />
+      <Select
+        v-model="filter"
+        :select="sortProduct"
+        class="toend w-32 h-[44px]"
+      />
 
-      <div class="-mt-12 relative ml-auto">
+      <div class="tostart -mt-12 relative ml-auto">
         <form @submit.prevent="submitHandler" class="flex gap-5 items-center">
           <Input v-model="searchKey" class="-mt-10" />
           <Btn type="submit" className="btn-gray" text="搜尋" />
@@ -59,7 +63,7 @@
       </div>
     </div>
     <div class="flex">
-      <div class="flex gap-5 flex-col mr-10 lg:w-32">
+      <div class="toend flex gap-5 flex-col mr-10 lg:w-32">
         <Tab
           tab="全部"
           :active="activeTab"
@@ -93,7 +97,9 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed, onUnmounted, onMounted } from 'vue';
+
+import gsap from 'gsap';
 
 import Breadcrumbs from '@/components/ui/TheBreadcrumbs.vue';
 import Select from '@/components/ui/TheSelect.vue';
@@ -217,6 +223,22 @@ const cancelSearchHandler = () => {
     category: activeTab.value,
   });
 };
+
+onMounted(() => {
+  gsap.from('.toend', {
+    x: '-100%',
+    duration: 0.8,
+  });
+  gsap.from('.tostart', {
+    x: '100%',
+    duration: 0.8,
+  });
+
+  gsap.from('.tobottom', {
+    y: '-100%',
+    duration: 0.8,
+  });
+});
 
 onUnmounted(() => {
   productPage.value.current = 1;

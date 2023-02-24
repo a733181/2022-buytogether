@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitHandler" class="lg:w-1/3 mx-auto">
+  <form @submit.prevent="submitHandler" class="tobottom lg:w-1/3 mx-auto">
     <Input
       title="手機號碼"
       v-model="form.phone"
@@ -47,8 +47,11 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+
+import gsap from 'gsap';
+
 import validator from 'validator';
 import Btn from '@/components/ui/TheBtn.vue';
 import Input from '@/components/ui/TheInput.vue';
@@ -122,4 +125,11 @@ const submitHandler = async () => {
   }
   isLoading.value = false;
 };
+
+onMounted(() => {
+  gsap.from('.tobottom', {
+    y: '-100%',
+    duration: 0.8,
+  });
+});
 </script>
