@@ -14,23 +14,17 @@
       <p v-if="!chatUserList.length" class="p-2">沒有紀錄</p>
       <ul v-if="chatUserList.length">
         <li
-          v-for="user in chatUserList"
-          :key="user._id"
+          v-for="toUser in chatUserList"
+          :key="toUser._id"
           class="mx-2 p-2 flex gap-1 rounded-lg border-[1px] border-gray-300 cursor-pointer mb-2"
-          @click="
-            addChatUserHandler({
-              toUserId: user.userId,
-              name: user.name,
-              image: user.image,
-            })
-          "
+          @click="addChatUserHandler(toUser)"
         >
           <img
-            :src="user.image"
-            :alt="user.name"
+            :src="toUser.image"
+            :alt="toUser.name"
             class="w-6 h-6 rounded-full object-cover"
           />
-          <p>{{ user.name }}</p>
+          <p>{{ toUser.name }}</p>
         </li>
       </ul>
     </div>

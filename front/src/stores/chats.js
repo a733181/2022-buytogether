@@ -8,7 +8,7 @@ import { useUserStore } from '@/stores/users';
 
 export const useChatsStore = defineStore('chats', () => {
   const user = useUserStore();
-  const { swalSuccess, swalError } = useSwalStore();
+  const { swalError } = useSwalStore();
   const socket = reactive({});
   socket.current = io(import.meta.env.VITE_API, {
     extraHeaders: {
@@ -80,11 +80,21 @@ export const useChatsStore = defineStore('chats', () => {
   const addChatUserHandler = (item) => {
     if (!user.isLoginHandler()) return;
     showChat.value = true;
-    toUser._id = item.toUserId;
+
+    toUser._id = item.userId || item._id;
     toUser.name = item.name;
     toUser.image = item.image;
     fromUserId.value = user.users._id;
+
+    const blockIndex = item.black.findIndex((item) => item === user.users._id);
+    if (blockIndex !== -1) {
+      showChat.value = false;
+      showList.value = false;
+      swalError('已被加入黑名單');
+    }
+
     getChatAllHandler();
+
     socket.current.emit('show-user', {
       fromUser: {
         _id: user.users._id,
@@ -128,12 +138,19 @@ export const useChatsStore = defineStore('chats', () => {
       const { data } = await apiAuth.post('/chat/users', {
         fromUserId: fromUserId.value,
       });
-
       chatUserList.value = data.result;
       chatUserList.value.forEach((item) => {
         item.image =
           item.image ||
           `https://source.boringavatars.com/beam/256/${item.name}?colors=ffabab,ffdaab,ddffab,abe4ff,d9abff`;
+      });
+      chatUserList.value.forEach((item, index) => {
+        const blackIndex = item.black.findIndex(
+          (black) => black === user.users._id
+        );
+        if (blackIndex !== -1) {
+          chatUserList.value.splice(index, 1);
+        }
       });
     } catch (error) {
       swalError(error);

@@ -15,18 +15,16 @@
         :alt="memberHomeProduct?.member.name || ''"
         class="w-16 h-16 rounded-full object-cover"
       />
-      <p class="text-xl">{{ memberHomeProduct?.member?.name || '' }}</p>
+      <p class="text-xl">
+        {{ memberHomeProduct?.member?.name || '' }}
+      </p>
+
       <img
+        v-if="memberHomeProduct.member._id !== users._id"
         src="@/assets/svg/chat.svg"
         alt="chat"
         class="w-6 hover:opacity-60"
-        @click="
-          addChatUserHandler({
-            toUserId: memberHomeProduct.member._id,
-            name: memberHomeProduct.member.name,
-            image: memberHomeProduct.member.image,
-          })
-        "
+        @click="addChatUserHandler(memberHomeProduct.member)"
       />
       <div v-if="memberHomeProduct?.member?._id !== users._id" class="ml-auto">
         <Btn

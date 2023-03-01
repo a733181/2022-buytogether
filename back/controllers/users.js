@@ -169,7 +169,6 @@ export const editUser = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
     showError(error, res);
   }
 };

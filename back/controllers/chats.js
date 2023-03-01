@@ -75,8 +75,8 @@ export const getAllUser = async (req, res) => {
         $or: [{ fromUserId: req.body.fromUserId }, { toUserId: req.body.fromUserId }],
       })
       .select('toUserId')
-      .populate('toUserId', '_id name image')
-      .populate('fromUserId', '_id name image');
+      .populate('toUserId', '_id name image black')
+      .populate('fromUserId', '_id name image black');
 
     const newResult = [];
 
@@ -90,6 +90,7 @@ export const getAllUser = async (req, res) => {
           userId: item.toUserId._id,
           name: item.toUserId.name || '',
           image: item.toUserId.image || '',
+          black: item.toUserId.black || [],
         });
       }
       const fromIndex = newResult.findIndex((user) => {
@@ -100,6 +101,7 @@ export const getAllUser = async (req, res) => {
           userId: item.fromUserId._id,
           name: item.fromUserId.name || '',
           image: item.fromUserId.image || '',
+          black: item.fromUserId.black || [],
         });
       }
     });
