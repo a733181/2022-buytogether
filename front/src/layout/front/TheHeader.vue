@@ -105,6 +105,7 @@ const { toggleProductCategory, toggleCollectCategory } = storeToRefs(
 
 const navBar = ref(null);
 const bodyHeight = ref();
+const navAnimation = ref();
 
 const activeClass = (active) => {
   return route.path === active ? 'text-primary bg-white' : null;
@@ -149,6 +150,8 @@ watch(
   () => {
     setTimeout(() => {
       bodyHeight.value = document.documentElement.scrollHeight;
+      ScrollTrigger.refresh();
+      navAnimation.value.play();
     }, 250);
   }
 );
@@ -156,7 +159,7 @@ watch(
 onMounted(async () => {
   setTimeout(() => {
     bodyHeight.value = document.documentElement.scrollHeight;
-    gsap.from(navBar.value, {
+    navAnimation.value = gsap.from(navBar.value, {
       yPercent: -100,
       paused: false,
       duration: 0.5,
