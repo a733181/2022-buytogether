@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
@@ -104,6 +104,7 @@ const { toggleProductCategory, toggleCollectCategory } = storeToRefs(
 );
 
 const navBar = ref(null);
+const bodyHeight = ref();
 
 const activeClass = (active) => {
   return route.path === active ? 'text-primary bg-white' : null;
@@ -143,24 +144,36 @@ const toggleCategory = () => {
 
 gsap.registerPlugin(ScrollTrigger);
 
-onMounted(() => {
-  gsap.from(navBar.value, {
-    yPercent: -100,
-    paused: false,
-    duration: 0.5,
-    scrollTrigger: {
-      id: 'nav',
-      start: 'top 60',
-      end: () => document.documentElement.scrollHeight,
-      onEnter(self) {
-        self.animation.play();
+watch(
+  () => route.path,
+  () => {
+    setTimeout(() => {
+      bodyHeight.value = document.documentElement.scrollHeight;
+    }, 250);
+  }
+);
+
+onMounted(async () => {
+  setTimeout(() => {
+    bodyHeight.value = document.documentElement.scrollHeight;
+    gsap.from(navBar.value, {
+      yPercent: -100,
+      paused: false,
+      duration: 0.5,
+      scrollTrigger: {
+        id: 'nav',
+        start: 'top 60',
+        end: () => bodyHeight.value,
+        onEnter(self) {
+          self.animation.play();
+        },
+        onUpdate(self) {
+          self.direction === -1
+            ? self.animation.play()
+            : self.animation.reverse();
+        },
       },
-      onUpdate(self) {
-        self.direction === -1
-          ? self.animation.play()
-          : self.animation.reverse();
-      },
-    },
-  });
+    });
+  }, 250);
 });
 </script>
