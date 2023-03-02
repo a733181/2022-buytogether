@@ -35,13 +35,7 @@
                 src="@/assets/svg/chat.svg"
                 alt="chat"
                 class="toggle w-4 hover:opacity-60 cursor-pointer"
-                @click="
-                  addChatUserHandler({
-                    toUserId: sellProduct.userId._id,
-                    name: sellProduct.userId.name,
-                    image: sellProduct.userId.image,
-                  })
-                "
+                @click="addChatUserHandler(sellProduct.userId)"
               />
               <p
                 class="toggle-text text-gray-500 text-sm absolute top-5 -left-[2px]"

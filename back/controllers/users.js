@@ -133,6 +133,8 @@ export const getUser = async (req, res) => {
 
 export const editUser = async (req, res) => {
   try {
+    let repeatPassword = false;
+
     const imageUrl = req.files.image ? req.files.image[0].path : null;
     req.user.name = req.body.name || req.user.name;
     req.user.email = req.body.email || req.user.email;
@@ -141,12 +143,14 @@ export const editUser = async (req, res) => {
       req.user.image = imageUrl;
     }
 
-    const repeatPassword = bcrypt.compareSync(req.body.password, req.user.password);
+    if (req.body?.password) {
+      repeatPassword = bcrypt.compareSync(req.body.password, req.user.password);
+    }
 
-    if (repeatPassword) {
+    if (req.body?.password && repeatPassword) {
       res.status(400).json({ success: false, message: '密碼重複' });
     } else {
-      if (req.body.password !== '') {
+      if (req.body?.password && req.body.password !== '') {
         req.user.password = req.body.password;
       }
       await req.user.save();
