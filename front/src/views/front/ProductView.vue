@@ -206,7 +206,7 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { ref, onUnmounted, computed, watch } from 'vue';
+import { ref, onUnmounted, computed, watch, onMounted } from 'vue';
 
 import Btn from '@/components/ui/TheBtn.vue';
 import Breadcrumbs from '@/components/ui/TheBreadcrumbs.vue';
@@ -244,7 +244,7 @@ getProductMessageHandler(route.params.id);
 watch(
   () => route.params.id,
   (value) => {
-    if (value && route.path.includes('/products')) {
+    if (value && route.path.includes('/product')) {
       getSellProdctHander(value);
       getProductMessageHandler(value);
     }
@@ -344,6 +344,10 @@ const clickAddCartBtnHanlder = async (data) => {
   await clickAddCartHandler(data);
   isLoadingAddCart.value = false;
 };
+
+onMounted(() => {
+  activeIndex.value = sellProduct.value.youtubeId ? imagesLength.value + 1 : 0;
+});
 
 onUnmounted(() => {
   messagePage.value.current = 1;
