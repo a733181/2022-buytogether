@@ -206,7 +206,7 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { ref, onUnmounted, computed, watch, onMounted } from 'vue';
+import { ref, onUnmounted, computed, watch } from 'vue';
 
 import Btn from '@/components/ui/TheBtn.vue';
 import Breadcrumbs from '@/components/ui/TheBreadcrumbs.vue';
@@ -238,19 +238,6 @@ const { isLoginHandler } = useUserStore();
 const { createReporteHandler } = useReportsStore();
 const { addChatUserHandler } = useChatsStore();
 
-getSellProdctHander(route.params.id);
-getProductMessageHandler(route.params.id);
-
-watch(
-  () => route.params.id,
-  (value) => {
-    if (route.path.includes('/product')) {
-      getSellProdctHander(route.params.id);
-      getProductMessageHandler(route.params.id);
-    }
-  }
-);
-
 const isLoadingMessage = ref(false);
 const isLoadingAddCart = ref(false);
 
@@ -279,6 +266,26 @@ const gridRow = computed(() => {
     }, minmax(0, 1fr));`;
   }
 });
+
+watch(
+  () => route.params.id,
+  async (value) => {
+    if (route.path.includes('/product')) {
+      await getSellProdctHander(route.params.id);
+      await getProductMessageHandler(route.params.id);
+      activeIndex.value = sellProduct.value.youtubeId
+        ? imagesLength.value + 1
+        : 0;
+    }
+  }
+);
+
+const getProductData = async () => {
+  await getSellProdctHander(route.params.id);
+  await getProductMessageHandler(route.params.id);
+  activeIndex.value = sellProduct.value.youtubeId ? imagesLength.value + 1 : 0;
+};
+getProductData();
 
 const changeImageIndex = (index) => {
   const isVedio = sellProduct.value.youtubeId ? true : false;
@@ -345,12 +352,9 @@ const clickAddCartBtnHanlder = async (data) => {
   isLoadingAddCart.value = false;
 };
 
-onMounted(() => {
-  activeIndex.value = sellProduct.value.youtubeId ? imagesLength.value + 1 : 0;
-});
-
 onUnmounted(() => {
   messagePage.value.current = 1;
+  activeIndex.value = 0;
 });
 </script>
 
