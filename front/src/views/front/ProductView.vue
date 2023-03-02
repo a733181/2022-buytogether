@@ -244,9 +244,9 @@ getProductMessageHandler(route.params.id);
 watch(
   () => route.params.id,
   (value) => {
-    if (value && route.path.includes('/product')) {
-      getSellProdctHander(value);
-      getProductMessageHandler(value);
+    if (route.path.includes('/product')) {
+      getSellProdctHander(route.params.id);
+      getProductMessageHandler(route.params.id);
     }
   }
 );
